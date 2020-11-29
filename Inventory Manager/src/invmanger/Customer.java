@@ -119,6 +119,16 @@ public class Customer {
 		return this.activeStatus;
 	}
 	
+	/**
+	 * Returns a String containing:
+	 * this Customer's name padded to 30 characters, 
+	 * this Customer's phone number padded to 11 characters, 
+	 * this Customer's sales tax padded to 5 characters (including period),
+	 * this Customer's suspension status as True/False, padded to 5 characters,
+	 * and this Customer's active status as True/False, padded to 5 characters,
+	 * each delimited by a pipe symbol.
+	 */
+	@Override
 	public String toString() {
 		String toReturn = "";
 		toReturn = String.format("%-30s|%-11s|%-1.3f|%-5b|%-5b", this.name, this.phone, this.salesTax, this.suspensionStatus, this.activeStatus);
