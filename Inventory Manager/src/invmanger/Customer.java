@@ -4,10 +4,6 @@ package invmanger;
  * Represents a Customer buying from the client's store.
  * @author Alexander Dung
  */
-/**
- * @author Us3r
- *
- */
 public class Customer {
 	private float salesTax;
 	private String name;
