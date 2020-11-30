@@ -5,7 +5,7 @@ package invmanger;
  * @author Alexander Dung
  */
 /**
- * @author Us3r
+ * @author Alexander Dung
  *
  */
 public class Product {
