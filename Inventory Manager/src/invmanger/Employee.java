@@ -1,5 +1,9 @@
 package invmanger;
 
+/**
+ * @author Bailey Norman
+ */
+
 public class Employee {
 	private float commission;
 	private String name;
