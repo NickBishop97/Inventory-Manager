@@ -1,5 +1,10 @@
 package invmanger;
 
+/**
+ * Represents an employee in one of the client's stores.
+ * @author Bailey Norman
+ */
+
 public class Employee {
 	private float commission;
 	private String name;
