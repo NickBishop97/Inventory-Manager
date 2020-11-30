@@ -4,10 +4,6 @@ package invmanger;
  * Represents a Product in the client's Warehouse or general product inventory.
  * @author Alexander Dung
  */
-/**
- * @author Us3r
- *
- */
 public class Product {
 	private String name;
 	private float costPrice;
