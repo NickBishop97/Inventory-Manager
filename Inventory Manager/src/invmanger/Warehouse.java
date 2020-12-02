@@ -1,6 +1,8 @@
 package invmanger;
 
-public class Warehouse {
+import java.io.Serializable;
+
+public class Warehouse implements Serializable {
 /**
  * Represents a warehouse owned by the client, which holds Products.
  * @author Nick Bishop

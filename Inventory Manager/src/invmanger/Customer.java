@@ -1,10 +1,12 @@
 package invmanger;
 
+import java.io.Serializable;
+
 /**
  * Represents a Customer buying from the client's store.
  * @author Alexander Dung
  */
-public class Customer {
+public class Customer implements Serializable {
 	private float salesTax;
 	private String name;
 	private String phone;

@@ -3,6 +3,8 @@ package invmanger;
 import java.util.Scanner;
 
 public class Manager {
+
+
 	public static void main(String[] args) 
 	{
 		

@@ -1,10 +1,12 @@
 package invmanger;
 
+import java.io.Serializable;
+
 /**
  * Represents a Product in the client's Warehouse or general product inventory.
  * @author Alexander Dung
  */
-public class Product {
+public class Product implements Serializable {
 	private String name;
 	private float costPrice;
 	private float salePrice;

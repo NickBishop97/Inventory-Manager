@@ -1,11 +1,12 @@
 package invmanger;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Represents an invoice which contains a customers purchase and payment information.
  * @author Bailey Norman
  */
-public class Invoice {
+public class Invoice implements Serializable {
 	private List<Float> reciptList;
 	private List<Product> productList;
 	private float totalCost;
