@@ -12,6 +12,7 @@ public class Data implements Serializable
    static ArrayList<Product> productArr = new ArrayList<Product>();
     static ArrayList<Warehouse> warehouseArr = new ArrayList<Warehouse>();
     static ArrayList<Customer> customerArr = new ArrayList<Customer>();
+    static ArrayList<Employee> employeeArr = new ArrayList<Employee>();
     /**
      * These ArrayLists are where every new Object gets stored. Saved from and loaded into.
      */
@@ -125,6 +126,33 @@ public class Data implements Serializable
             i.printStackTrace();
         }
     }
+    public static void saveEmployee(){
+        /**
+         * Used to save Employee ArrayList to a file.
+         */
+        try {
+            FileOutputStream fileOut = new FileOutputStream("employee.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(employeeArr);
+            out.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
+    public static void loadEmployee(){
+        /**
+         * Loads saved Objects into employee Array
+         */
 
+        try{
+            FileInputStream fileIn = new FileInputStream("employee.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            employeeArr = (ArrayList<Employee>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException | ClassNotFoundException i){
+            i.printStackTrace();
+        }
+    }
 
 }
