@@ -31,9 +31,7 @@ public class Warehouse implements Serializable {
 		this.name = newName;
 	}
 	//public void addStock()
-	//public void displayLowStock()
 	//public void removeStock()
-	//public void displayStock()
 	/**
 	 * Returns the warehouse's ID number
 	 * @return this warehouse's ID number
