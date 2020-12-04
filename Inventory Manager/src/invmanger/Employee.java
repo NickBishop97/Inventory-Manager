@@ -1,11 +1,12 @@
 package invmanger;
+import java.io.Serializable;
 
 /**
  * Represents an employee in one of the client's stores.
  * @author Bailey Norman
  */
 
-public class Employee {
+public class Employee implements Serializable {
 	private float commission;
 	private String name;
 	private String phone;
