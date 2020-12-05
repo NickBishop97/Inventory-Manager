@@ -8,11 +8,12 @@ import java.util.ArrayList;
 
 public class Data implements Serializable
 {
-    static ArrayList<Invoice> invoiceArr = new ArrayList<Invoice>();
-   static ArrayList<Product> productArr = new ArrayList<Product>();
-    static ArrayList<Warehouse> warehouseArr = new ArrayList<Warehouse>();
-    static ArrayList<Customer> customerArr = new ArrayList<Customer>();
-    static ArrayList<Employee> employeeArr = new ArrayList<Employee>();
+	public static String password = "";
+    public static ArrayList<Invoice> invoiceArr = new ArrayList<Invoice>();
+    public static ArrayList<Product> productArr = new ArrayList<Product>();
+    public static ArrayList<Warehouse> warehouseArr = new ArrayList<Warehouse>();
+    public static ArrayList<Customer> customerArr = new ArrayList<Customer>();
+    public static ArrayList<Employee> employeeArr = new ArrayList<Employee>();
     /**
      * These ArrayLists are where every new Object gets stored. Saved from and loaded into.
      */
@@ -30,6 +31,7 @@ public class Data implements Serializable
             i.printStackTrace();
         }
     }
+    
     public static void loadCustomer(){
         /**
          * Loads saved Objects into customer Array
@@ -45,6 +47,7 @@ public class Data implements Serializable
             i.printStackTrace();
         }
     }
+    
     public static void saveInvoice(){
         /**
          * Used to save Invoice ArrayList to a file.
@@ -58,6 +61,7 @@ public class Data implements Serializable
             i.printStackTrace();
         }
     }
+    
     public static void loadInvoice(){
         /**
          * Loads saved Objects into invoice Array
@@ -72,6 +76,7 @@ public class Data implements Serializable
             i.printStackTrace();
         }
     }
+    
     public static void saveWareHouse(){
         /**
          * Used to save Warehouse ArrayList to a file.
@@ -85,6 +90,7 @@ public class Data implements Serializable
             i.printStackTrace();
         }
     }
+    
     public static void loadWarehouse(){
         /**
          * Loads saved Objects into warehouse Array
@@ -99,6 +105,7 @@ public class Data implements Serializable
             i.printStackTrace();
         }
     }
+    
     public static void saveProduct(){
         /**
          * Used to save Product ArrayList to a file.
@@ -112,6 +119,7 @@ public class Data implements Serializable
             i.printStackTrace();
         }
     }
+    
     public static void loadProduct(){
         /**
          * Loads saved Objects into product Array
@@ -126,6 +134,7 @@ public class Data implements Serializable
             i.printStackTrace();
         }
     }
+    
     public static void saveEmployee(){
         /**
          * Used to save Employee ArrayList to a file.
@@ -139,6 +148,7 @@ public class Data implements Serializable
             i.printStackTrace();
         }
     }
+    
     public static void loadEmployee(){
         /**
          * Loads saved Objects into employee Array
@@ -148,6 +158,29 @@ public class Data implements Serializable
             FileInputStream fileIn = new FileInputStream("employee.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             employeeArr = (ArrayList<Employee>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException | ClassNotFoundException i){
+            i.printStackTrace();
+        }
+    }
+    
+    public static void savePassword() {
+    	try {
+    		FileOutputStream fileOut = new FileOutputStream("password.ser");
+    		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+    		out.writeObject(password);
+    		out.close();
+    	} catch (IOException i) {
+    		i.printStackTrace();
+    	}
+    }
+    
+    public static void loadPassword(){
+        try{
+            FileInputStream fileIn = new FileInputStream("password.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            password = (String) in.readObject();
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException i){
