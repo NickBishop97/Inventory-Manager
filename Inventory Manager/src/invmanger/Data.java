@@ -1,6 +1,7 @@
 package invmanger;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author Jaime Alvarenga
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 
 public class Data implements Serializable
 {
+	public static Date lastLaunch = new Date();
 	public static String password = "";
     public static ArrayList<Invoice> invoiceArr = new ArrayList<Invoice>();
     public static ArrayList<Product> productArr = new ArrayList<Product>();
@@ -181,6 +183,29 @@ public class Data implements Serializable
             FileInputStream fileIn = new FileInputStream("password.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             password = (String) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException | ClassNotFoundException i){
+            i.printStackTrace();
+        }
+    }
+    
+    public static void saveDate() {
+    	try {
+    		FileOutputStream fileOut = new FileOutputStream("date.ser");
+    		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+    		out.writeObject(lastLaunch);
+    		out.close();
+    	} catch (IOException i) {
+    		i.printStackTrace();
+    	}
+    }
+    
+    public static void loadDate(){
+        try{
+            FileInputStream fileIn = new FileInputStream("date.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            lastLaunch = (Date) in.readObject();
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException i){
