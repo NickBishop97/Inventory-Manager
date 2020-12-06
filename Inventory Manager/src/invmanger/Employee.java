@@ -107,7 +107,7 @@ public class Employee implements Serializable {
 	//Override toString for Employee
 	public String toString() {
 		String toReturn = "";
-		toReturn = String.format("%-30s|%-11s|%-1.3f|%-1.3f", this.name, this.phone, this.commission, this.totalSales);
+		toReturn = String.format("%-30s|%-11s|%-10.3f|%-1.3f", this.name, this.phone, this.commission, this.totalSales);
 		return toReturn;
 	}
 }
