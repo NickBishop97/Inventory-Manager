@@ -50,24 +50,38 @@ public class Manager {
 					System.out.println("4) Edit Product Details");
 					System.out.println("5) Delete Products");
 					System.out.println("6) Warehouse");
+					displayTable(Data.productArr);
 					System.out.print("\nInput:  ");
 					
 					userInt = input.nextInt();
 					input.nextLine();
 					System.out.print("\n");
 					String y = "";
+					//TODO add options 1 and 2
 					if(userInt == 3) {
-						//sets year
-						System.out.print("Product Name:  ");
-						y = input.nextLine();
-						
-						//sets month
-						System.out.print("Product ID:  ");
-						y = input.nextLine();
-						
-						//sets day
-						System.out.print("Sales Price:  ");
-						y = input.nextLine();
+						System.out.println("--------------------");
+						System.out.println("Adding New Products");
+						System.out.println("--------------------\n");
+						System.out.print("Please enter Product's Name.\nName: ");
+						String pname = input.next();
+						System.out.print("\nPlease enter Cost Price\nCost Price: ");
+						Float pcost = input.nextFloat();
+						System.out.print("\nPlease enter Sale Price\nSale Price: ");
+						Float psale = input.nextFloat();
+						System.out.print("\nPlease enter Category Name?\nCategory:  ");
+						String pcat = input.next();
+						Product prod = new Product(pname, (float)pcost, (float)psale, pcat);
+						clrscr();
+						System.out.printf("%-30s|%-8s|%-8s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+						System.out.print("\n");
+						System.out.println(prod);
+						System.out.println("\nDoes this information look correct? (Y/N)  ");
+						String h = input.next();
+						if(h.equals("Y") || h.equals("y")) {
+							Data.productArr.add(prod);
+							System.out.println("New Product has been added to the filesystem.");
+							Thread.sleep(2500);
+						}
 					}
 					else if(userInt == 1) {
 						clrscr();
@@ -77,6 +91,7 @@ public class Manager {
 						System.out.println("|     Product Name     |Product ID|Sales Price|Stock|");
 						System.out.println("|                      |          |           |     |");
 						System.out.println("|   Pringles Original  |  294758  |   2.99$   | 80  |\n\n");
+						//TODO connect this to the code
 					}
 					else if(userInt == 5) {
 						while(userInt != 0) {
@@ -115,13 +130,14 @@ public class Manager {
 								System.out.println("Adding Warehouse");
 								System.out.println("--------------------\n");
 								System.out.print("What is the warehouse's Name?\nName:  ");
-								input.nextLine();
+								String wname = input.next();
 								System.out.print("\nWhat is the warehouse's Phone#?\nPhone#:  ");
-								input.nextLine();
+								String wphone = input.next();
 								System.out.print("\nWhats is the warehouse's Address?\nAddress:  ");
-								input.nextLine();
+								String waddress = input.next();
+								Warehouse ware = new Warehouse(wname, waddress, wphone);
+								Data.warehouseArr.add(ware);
 								System.out.println("The Warehouse has been added to the filesystem.");
-								//TODO add code to create new warehouse.
 								Thread.sleep(2500);
 							}
 							else if(userInt == 2) {
@@ -137,6 +153,7 @@ public class Manager {
 								input.nextLine();
 								System.out.println("Stock successfully added.");
 								Thread.sleep(2500);
+								//TODO connect this to the rest of the code
 							}
 						}
 					}					
@@ -158,6 +175,7 @@ public class Manager {
 					System.out.println("2) Remove Employee");
 					System.out.println("3) View Employee Sales");
 					System.out.println("4) Edit Employee Details");
+					displayTable(Data.employeeArr);
 					System.out.print("\nInput:  ");
 					
 					userInt = input.nextInt();
@@ -169,15 +187,24 @@ public class Manager {
 						System.out.println("Adding New Employee");
 						System.out.println("--------------------\n");
 						System.out.print("Please enter Employee's Name.\nName: ");
-						input.nextLine();
-						//TODO add connection to filesystem for all 3 of these enteries
+						String ename = input.nextLine();
 						System.out.print("\nPlease enter Employee's Phone#\nPhone Number: ");
-						input.nextLine();
-						System.out.print("\nPlease enter Employee's Comissions.\nComissions: ");
-						input.nextLine();
-						//TODO add confirmation to see if all the info is correct, if we have time.
-						System.out.println("New Employee has been added to the filesystem.");
-						Thread.sleep(2500);
+						String ephone = input.nextLine();
+						System.out.print("\nPlease enter Employee's Commissions.\nCommissions: ");
+						Float commission = input.nextFloat();
+						Employee emplo = new Employee((float) commission, ename, ephone, (float) 0.00);
+						clrscr();
+						System.out.printf("%-30s|%-11s|%-10s|%-1s","Name","Phone","Comis.","Total Sales");
+						System.out.print("\n");
+						System.out.println(emplo);
+						System.out.println("\nDoes this information look correct? (Y/N)  ");
+						String h = input.next();
+						if(h.equals("Y") || h.equals("y")) {
+							Data.employeeArr.add(emplo);
+							System.out.println("New Employee has been added to the filesystem.");
+							Thread.sleep(2500);
+						}
+						
 					}
 					else if(userInt == 2 ) {
 						clrscr();
@@ -185,11 +212,10 @@ public class Manager {
 						System.out.println("Removing Employee");
 						System.out.println("--------------------\n");
 						System.out.print("Please enter the Employee's Name.\nName: ");
-						input.nextLine();
+						String ename = input.nextLine();
 						System.out.print("\nAre you sure you want to delete this Employee?(Y/N)  ");
 						String y = input.nextLine();
-						if(y.equals("Y")) {
-							//TODO Command to delete Employee
+						if(y.equals("Y") || y.equals("y")) {
 							System.out.println("\nEmployee has been deleted from the database.");
 							Thread.sleep(2500);
 						}
@@ -258,7 +284,7 @@ public class Manager {
 					clrscr();
 					System.out.println("--------------------");
 					System.out.println("Customers");
-					System.out.println("--------------------\n\n");
+					System.out.println("--------------------\n");
 					System.out.println("0) Exit to main menu");
 					System.out.println("1) Add Customer");
 					System.out.println("2) Edit Customer Details");
@@ -274,11 +300,13 @@ public class Manager {
 						System.out.println("Adding New Customer");
 						System.out.println("--------------------\n");
 						System.out.print("What is the Customer's Name?\nName: ");
-						input.nextLine();
-						//TODO connect to filesystem
-						System.out.print("What is the Customer's Phone#?\nName: ");
-						input.nextLine();
-						//TODO connect to filesystem
+						String cname = input.nextLine();
+						System.out.print("What is the Customer's Phone#?\nPhone: ");
+						String cphone = input.nextLine();
+						Customer cust = new Customer((float) 5.00, cname, cphone, false, true);
+						Data.customerArr.add(cust);
+						//Test display of all customers in file system
+						//displayTable(Data.customerArr);
 					}
 					else if(userInt == 2) {
 						clrscr();
@@ -385,6 +413,6 @@ public class Manager {
 	}
 	public static void displayTable(ArrayList<?> x) {
         for (int i = 0; i < x.size(); i++)
-            x.toString();
+        	System.out.println(x.get(i));
     }
 }
