@@ -133,7 +133,7 @@ public class Customer implements Serializable {
 	@Override
 	public String toString() {
 		String toReturn = "";
-		toReturn = String.format("%-30s|%-11s|%-1.3f|%-5b|%-5b", this.name, this.phone, this.salesTax, this.suspensionStatus, this.activeStatus);
+		toReturn = String.format("%-30s|%-11s|%-10.3f|%-17b|%-5b", this.name, this.phone, this.salesTax, this.suspensionStatus, this.activeStatus);
 		return toReturn;
 	}
 	

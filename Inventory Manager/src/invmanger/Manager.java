@@ -22,7 +22,7 @@ public class Manager {
 			clrscr();
 			System.out.println("--------------------");
 			System.out.println("Main Menu");
-			System.out.println("--------------------\n\n");
+			System.out.println("--------------------\n");
 			
 			
 			System.out.println("0)  Shut Down");
@@ -41,7 +41,7 @@ public class Manager {
 					clrscr();
 					System.out.println("--------------------");
 					System.out.println("Products");
-					System.out.println("--------------------\n\n");
+					System.out.println("--------------------\n");
 					
 					System.out.println("0) Exit to main menu");
 					System.out.println("1) View All Products");
@@ -50,81 +50,205 @@ public class Manager {
 					System.out.println("4) Edit Product Details");
 					System.out.println("5) Delete Products");
 					System.out.println("6) Warehouse");
-					displayTable(Data.productArr);
 					System.out.print("\nInput:  ");
-					
 					userInt = input.nextInt();
-					input.nextLine();
-					System.out.print("\n");
-					String y = "";
-					//TODO add options 1 and 2
-					if(userInt == 3) {
-						System.out.println("--------------------");
-						System.out.println("Adding New Products");
-						System.out.println("--------------------\n");
-						System.out.print("Please enter Product's Name.\nName: ");
-						String pname = input.next();
-						System.out.print("\nPlease enter Cost Price\nCost Price: ");
-						Float pcost = input.nextFloat();
-						System.out.print("\nPlease enter Sale Price\nSale Price: ");
-						Float psale = input.nextFloat();
-						System.out.print("\nPlease enter Category Name?\nCategory:  ");
-						String pcat = input.next();
-						Product prod = new Product(pname, (float)pcost, (float)psale, pcat);
+					if(userInt == 1) {
 						clrscr();
-						System.out.printf("%-30s|%-8s|%-8s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
-						System.out.print("\n");
-						System.out.println(prod);
-						System.out.println("\nDoes this information look correct? (Y/N)  ");
-						String h = input.next();
-						if(h.equals("Y") || h.equals("y")) {
-							Data.productArr.add(prod);
-							System.out.println("New Product has been added to the filesystem.");
-							Thread.sleep(2500);
+						if(Data.productArr.isEmpty()) {
+							System.out.println("You must add a Product before you can view them");
+							pressAny();
+						}
+						else {
+							System.out.println("--------------------");
+							System.out.println("View All Products");
+							System.out.println("--------------------\n");
+							for (int i = 0; i < Data.warehouseArr.size(); i++) {
+								Data.warehouseArr.get(i);
+								System.out.print("\n");
+							}
+							pressAny();
 						}
 					}
-					else if(userInt == 1) {
+					else if(userInt == 2) {
 						clrscr();
-						System.out.println("--------------------");
-						System.out.println("View All Products");
-						System.out.println("--------------------\n");
-						System.out.println("|     Product Name     |Product ID|Sales Price|Stock|");
-						System.out.println("|                      |          |           |     |");
-						System.out.println("|   Pringles Original  |  294758  |   2.99$   | 80  |\n\n");
-						//TODO connect this to the code
+						if(Data.productArr.isEmpty()) {
+							System.out.println("You must add a Product before you can view understocked products");
+							pressAny();
+						}
+						else {
+							System.out.println("--------------------");
+							System.out.println("Understocked Products");
+							System.out.println("--------------------\n");
+							for (int i = 0; i < Data.warehouseArr.size(); i++) {
+								Data.warehouseArr.get(i).listLowStock();
+								System.out.print("\n");
+							}
+							pressAny();
+						}
+					}
+					else if(userInt == 3) {
+						clrscr();
+						if(Data.warehouseArr.isEmpty()) {
+							System.out.println("You must add a Warehouse before you can add a Product.");
+							pressAny();
+						}
+						else {
+							System.out.println("--------------------");
+							System.out.println("Adding New Products");
+							System.out.println("--------------------\n");
+							System.out.print("Please enter Product's Name.\nName: ");
+							String pname = input.next();
+							System.out.print("\nPlease enter Cost Price\nCost Price: ");
+							Float pcost = input.nextFloat();
+							System.out.print("\nPlease enter Sale Price\nSale Price: ");
+							Float psale = input.nextFloat();
+							System.out.print("\nPlease enter Category Name?\nCategory:  ");
+							String pcat = input.next();
+							System.out.print("\nPlease enter Avaliabe Stock.\nStock:  ");
+							Integer stock = input.nextInt();
+							clrscr();
+							System.out.print("\n");
+							displayTable(Data.warehouseArr);
+							System.out.print("\n");
+							System.out.print("\nPlease select the Warehouse that this product is located at.\nNumber:  ");
+							Integer ware = input.nextInt();
+							Product prod = new Product(pname, (float)pcost, (float)psale, pcat);
+							clrscr();
+							System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s|%-15s","Name","Cost","Price","Category","Amount Sold", "Warehouse");
+							System.out.print("\n");
+							System.out.println(prod + "|" + Data.warehouseArr.get(ware).getWarehouseID());
+							System.out.print("\nDoes this information look correct? (Y/N)  ");
+							String h = input.next();
+							if(h.equals("Y") || h.equals("y")) {
+								Data.productArr.add(prod);
+								Data.warehouseArr.get(ware).addProduct(Data.productArr.size()-1);
+								Data.warehouseArr.get(ware).increaseStock(Data.productArr.size()-1, stock);
+								System.out.println("New Product has been added to the file system.");
+								pressAny();
+							}
+						}
+					}
+					else if(userInt == 4) {
+						clrscr();
+						if(Data.productArr.isEmpty()) {
+							System.out.println("You need to add a Product before you can edit it's details.");
+							pressAny();
+						}
+						else {
+							System.out.printf("%-33s|%-15s|%-15s|%-20s|%-15s","   Name","Cost","Price","Category","Amount Sold");
+							System.out.print("\n");
+							displayTable(Data.productArr);
+							System.out.print("\nPlease select a Product you would like to edit.\nNumber: ");
+							Integer num = input.nextInt();
+							while(userInt != 5) {
+								clrscr();
+								System.out.println("--------------------");
+								System.out.println("Choose an Option to edit");
+								System.out.println("--------------------\n");
+								System.out.println("0) Current Name:  "+ Data.productArr.get(num).getName());
+								System.out.println("1) Current Cost Price:  " + Data.productArr.get(num).getCostPrice());
+								System.out.println("2) Current Sale Price:  " + Data.productArr.get(num).getSalePrice());
+								System.out.println("3) Current Category:  " + Data.productArr.get(num).getCategory());
+								System.out.println("4) Current Quanity Sold:  " + Data.productArr.get(num).getQuantitySold());
+								System.out.println("5) Finish editing");
+								System.out.println("\nInput:  ");
+								userInt = input.nextInt();
+								if(userInt == 0) {
+									clrscr();
+									System.out.print("Please enter the new name for this Product:  ");
+									String newname = input.next();
+									Data.productArr.get(num).setName(newname);
+									System.out.println("Name has successfully been changed to " + newname + "\n");
+									System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+									System.out.print("\n");
+									System.out.println(Data.productArr.get(num) + "\n");
+									pressAny();
+								}
+								if(userInt == 1) {
+									clrscr();
+									System.out.print("Please enter the new Cost Price for this Product");
+									Float newcost = input.nextFloat();
+									Data.productArr.get(num).setCostPrice(newcost);
+									System.out.println("Cost Price has successfully been changed to " + newcost + "\n");
+									System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+									System.out.print("\n");
+									System.out.println(Data.productArr.get(num) + "\n");
+									pressAny();
+								}
+								if(userInt == 2) {
+									clrscr();
+									System.out.print("Please enter the new Sale Price for this Product");
+									Float newsale = input.nextFloat();
+									Data.productArr.get(num).setSalePrice(newsale);
+									System.out.println("Sale Price has successfully been changed to " + newsale + "\n");
+									System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+									System.out.print("\n");
+									System.out.println(Data.productArr.get(num) + "\n");
+									pressAny();
+								}
+								if(userInt == 3) {
+									clrscr();
+									System.out.print("Please enter the new Category for this Product");
+									String newcat = input.next();
+									Data.productArr.get(num).setCategory(newcat);;
+									System.out.println("Category has successfully been changed to " + newcat + "\n");
+									System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+									System.out.print("\n");
+									System.out.println(Data.productArr.get(num) + "\n");
+									pressAny();
+								}
+								if(userInt == 4) {
+									clrscr();
+									System.out.print("Please enter the new Quanity Sold for this Product");
+									Integer newquan = input.nextInt();
+									Data.productArr.get(num).setQuantitySold(newquan);
+									System.out.println("Quanity Sold has successfully been changed to " + newquan + "\n");
+									System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+									System.out.print("\n");
+									System.out.println(Data.productArr.get(num) + "\n");
+									pressAny();
+								}
+							}
+						}
 					}
 					else if(userInt == 5) {
-						while(userInt != 0) {
-							clrscr();
-							System.out.println("--------------------");
-							System.out.println("Delete Products");
-							System.out.println("--------------------\n");
-							System.out.print("Type a Product name to delete or type 0 to exit:  ");
-							input.nextLine();
-							if(userInt != 0) {
-								System.out.print("\nAre you sure you want to delete this product from the filesystem?(Y/N) ");
-								String z = input.nextLine();
-								if(z.equals("Y")) {
-									//TODO add code to delete product from filesystem
-									System.out.println("The product has been removed successfully.");
-									Thread.sleep(2500);
+						clrscr();
+						if(Data.productArr.isEmpty()) {
+							System.out.println("You must add a Product before you can delete them");
+							pressAny();
+						}
+						else {
+							while(userInt != 0) {
+								clrscr();
+								System.out.println("--------------------");
+								System.out.println("Delete Products");
+								System.out.println("--------------------\n");
+								displayTable(Data.productArr);
+								System.out.print("\nPlease select an Number from the list to remove.\nNumber: ");
+								Integer num = input.nextInt();
+								System.out.print("\nAre you sure you want to delete this Employee?(Y/N)  ");
+								String z = input.next();
+								if(z.equals("Y") || z.equals("y")) {
+									remove(Data.productArr, num);
+									System.out.println("Product has been deleted from the File System.");
+									pressAny();
 								}
 							}
 						}
 					}
 					else if(userInt == 6) {
-						while(userInt != 0) {
+						while(userInt != 2) {
 							clrscr();
 							System.out.println("--------------------");
 							System.out.println("Warehouse");
 							System.out.println("--------------------\n");
-							System.out.println("0) Return to Products menu");
-							System.out.println("1) Add Warehouse");
-							System.out.println("2) Add Stock");
+							System.out.println("0) Add Warehouse");
+							System.out.println("1) Add Stock");
+							System.out.println("2) Return to Products menu");
 							System.out.print("\nInput:  ");
 							userInt = input.nextInt();
 							input.nextLine();
-							if(userInt == 1) {
+							if(userInt == 0) {
 								clrscr();
 								System.out.println("--------------------");
 								System.out.println("Adding Warehouse");
@@ -138,22 +262,24 @@ public class Manager {
 								Warehouse ware = new Warehouse(wname, waddress, wphone);
 								Data.warehouseArr.add(ware);
 								System.out.println("The Warehouse has been added to the filesystem.");
-								Thread.sleep(2500);
+								pressAny();
 							}
-							else if(userInt == 2) {
+							else if(userInt == 1) {
 								clrscr();
 								System.out.println("--------------------");
 								System.out.println("Adding Stock");
 								System.out.println("--------------------\n");
-								System.out.print("What is the Product Name?\nName:  ");
-								input.nextLine();
-								System.out.print("\nWhat warehouse is the Product located?\nWarehouse:  ");
-								input.nextLine();
-								System.out.print("\nHow much stock is being added?\nAmount:  ");
-								input.nextLine();
-								System.out.println("Stock successfully added.");
-								Thread.sleep(2500);
-								//TODO connect this to the rest of the code
+								for (int i = 0; i < Data.warehouseArr.size(); i++) {
+									System.out.print(i + ") ");
+									System.out.print(Data.warehouseArr.get(i).getWarehouseID());
+									System.out.print("\n");
+								}
+								Integer ware = input.nextInt();
+								System.out.print("What Warehouse is this product located at.\nNumber:  ");
+								displayTable(Data.productArr);
+								System.out.print("\nPlease select the Product you would like to add stock to.\nNumber:  ");
+								Integer num = input.nextInt();
+								Data.warehouseArr.get(ware).increaseStock(Data.productArr.size()-1, num);
 							}
 						}
 					}					
@@ -169,13 +295,12 @@ public class Manager {
 					clrscr();
 					System.out.println("--------------------");
 					System.out.println("Employees");
-					System.out.println("--------------------\n\n");
+					System.out.println("--------------------\n");
 					System.out.println("0) Exit to main menu");
 					System.out.println("1) Add Employee");
 					System.out.println("2) Remove Employee");
 					System.out.println("3) View Employee Sales");
 					System.out.println("4) Edit Employee Details");
-					displayTable(Data.employeeArr);
 					System.out.print("\nInput:  ");
 					
 					userInt = input.nextInt();
@@ -194,81 +319,118 @@ public class Manager {
 						Float commission = input.nextFloat();
 						Employee emplo = new Employee((float) commission, ename, ephone, (float) 0.00);
 						clrscr();
-						System.out.printf("%-30s|%-11s|%-10s|%-1s","Name","Phone","Comis.","Total Sales");
+						System.out.printf("%-30s|%-11s|%-10s|%-1s","Name","Phone","Commi.","Total Sales");
 						System.out.print("\n");
 						System.out.println(emplo);
-						System.out.println("\nDoes this information look correct? (Y/N)  ");
+						System.out.print("\nDoes this information look correct? (Y/N)  ");
 						String h = input.next();
 						if(h.equals("Y") || h.equals("y")) {
 							Data.employeeArr.add(emplo);
 							System.out.println("New Employee has been added to the filesystem.");
-							Thread.sleep(2500);
+							pressAny();
 						}
 						
 					}
 					else if(userInt == 2 ) {
 						clrscr();
-						System.out.println("--------------------");
-						System.out.println("Removing Employee");
-						System.out.println("--------------------\n");
-						System.out.print("Please enter the Employee's Name.\nName: ");
-						String ename = input.nextLine();
-						System.out.print("\nAre you sure you want to delete this Employee?(Y/N)  ");
-						String y = input.nextLine();
-						if(y.equals("Y") || y.equals("y")) {
-							System.out.println("\nEmployee has been deleted from the database.");
-							Thread.sleep(2500);
+						if(Data.employeeArr.isEmpty()) {
+							System.out.println("You need to add a Employee before you can Remove one.");
+							pressAny();
+						}
+						else {
+							System.out.println("--------------------");
+							System.out.println("Removing Employee");
+							System.out.println("--------------------\n");
+							System.out.printf("%-30s|%-11s|%-10s|%-1s","Name","Phone","Commi.","Total Sales");
+							System.out.print("\n");
+							displayTable(Data.employeeArr);
+							System.out.print("\nPlease select an Number from the list to remove.\nNumber: ");
+							Integer num = input.nextInt();
+							System.out.print("\nAre you sure you want to delete this Employee?(Y/N)  ");
+							String y = input.next();
+							if(y.equals("Y") || y.equals("y")) {
+								remove(Data.employeeArr, num);
+								System.out.println("Employee has been deleted from the File System.");
+								pressAny();
+							}
 						}
 					}
 					else if(userInt == 3) {
 						clrscr();
-						System.out.println("--------------------");
-						System.out.println("Employee's Sales");
-						System.out.println("--------------------\n");
-						System.out.print("Please enter the Employee's Name.\nName: ");
-						input.nextLine();
-						//TODO displys info about employee's sales
+						if(Data.employeeArr.isEmpty()) {
+							System.out.println("You need to add a Employee before you can view their sales.");
+							pressAny();
+						}
+						else {
+							System.out.println("--------------------");
+							System.out.println("Employee's Sales");
+							System.out.println("--------------------\n");
+							System.out.printf("%-30s|%-11s","Name","Total Sales");
+							System.out.print("\n");
+							for (int i = 0; i < Data.employeeArr.size(); i++) {
+								System.out.printf("%-30s|%-11s", Data.employeeArr.get(i).getName() ,Data.employeeArr.get(i).getSales());
+								System.out.print("\n");
+							}
+							System.out.print("\n");
+							pressAny();
+						}
 					}
 					else if(userInt == 4) {
 						clrscr();
-						System.out.print("Please enter the Employee's Name that you want to edit.\nName: ");
-						String Name = input.nextLine();
-						//TODO Add connection to filesystem
-						while(userInt != 3) {
-							clrscr();
-							System.out.println("--------------------");
-							System.out.println("Choose an Option to edit");
-							System.out.println("--------------------\n");
-							//TODO add feture where you can see what your going to edit before selecting
-							System.out.println("0) Name: ");
-							System.out.println("1) Phone: ");
-							System.out.println("2) Commission: ");
-							System.out.println("3) Finish editing");
-							System.out.println("\nInput:  ");
-							userInt = input.nextInt();
-							if(userInt == 0) {
+						if(Data.employeeArr.isEmpty()) {
+							System.out.println("You need to add a Employee before you can edit their details.");
+							pressAny();
+						}
+						else {
+							System.out.printf("%-32s|%-11s|%-10s|%-1s","Name","Phone","Commi.","Total Sales");
+							System.out.print("\n");
+							displayTable(Data.employeeArr);
+							System.out.print("\nPlease select a Employee you would like to edit.\nNumber: ");
+							Integer num = input.nextInt();
+							while(userInt != 3) {
 								clrscr();
-								System.out.print("What is the new Name for this Employee: ");
-								input.nextLine();
-								//TODO add connection to filesystem
-								System.out.println("\nEmployee Name has been changed in the database.");
-								Thread.sleep(2500);
-							}
-							else if(userInt == 1) {
-								clrscr();
-								System.out.print("What is the new Phone# for this Employee");
-								input.nextLine();
-								//TODO add connection to filesystem
-								System.out.println("\nEmployee Phone# has been changed in the database.");
-								Thread.sleep(2500);
-							}
-							else if(userInt == 2) {
-								clrscr();
-								System.out.print("What is the new Commission fo this Employee");
-								input.nextLine();
-								//TODO add connection to filesystem
-								System.out.println("\nEmployee Commission has been changed in the database.");
-								Thread.sleep(2500);
+								System.out.println("--------------------");
+								System.out.println("Choose an Option to edit");
+								System.out.println("--------------------\n");
+								System.out.println("0) Current Name:  "+ Data.employeeArr.get(num).getName());
+								System.out.println("1) Current Phone:  " + Data.employeeArr.get(num).getPhone());
+								System.out.println("2) Current Commission:  " + Data.employeeArr.get(num).getCommission());
+								System.out.println("3) Finish editing");
+								System.out.println("\nInput:  ");
+								userInt = input.nextInt();
+								if(userInt == 0) {
+									clrscr();
+									System.out.print("Please enter the new name for this Employee:  ");
+									String newname = input.next();
+									Data.employeeArr.get(num).setName(newname);
+									System.out.println("Name has successfully been changed to " + newname + "\n");
+									System.out.printf("%-30s|%-11s|%-10s|%-1s","Name","Phone","Commi.","Total Sales");
+									System.out.print("\n");
+									System.out.println(Data.employeeArr.get(num) + "\n");
+									pressAny();
+								}
+								else if(userInt == 1) {
+									clrscr();
+									System.out.print("Please enter the new Phone Number for this Employee:  ");
+									String newPhone = input.next();
+									Data.employeeArr.get(num).setPhone(newPhone);
+									System.out.println("Phone Number has successfully been changed to " + newPhone + "\n");
+									System.out.printf("%-30s|%-11s|%-10s|%-1s","Name","Phone","Commi.","Total Sales");
+									System.out.print("\n");
+									System.out.println(Data.employeeArr.get(num) + "\n");
+									pressAny();
+								}
+								else if(userInt == 2) {
+									clrscr();
+									System.out.print("Please enter the new Commission Number for this Employee:  ");
+									Float newcom = input.nextFloat();
+									Data.employeeArr.get(num).setCommission(newcom);
+									System.out.println("Employee's Commission has successfully been changed to " + newcom + "\n");
+									System.out.printf("%-30s|%-11s|%-10s|%-1s","Name","Phone","Commi.","Total Sales");
+									System.out.print("\n");
+									System.out.println(Data.employeeArr.get(num) + "\n");
+									pressAny();
+								}
 							}
 						}
 					}
@@ -290,6 +452,7 @@ public class Manager {
 					System.out.println("2) Edit Customer Details");
 					System.out.println("3) View Active Invoices");
 					System.out.println("4) View Archived Invoices");
+					//TODO Add options 3 and 4
 					System.out.print("\nInput:  ");
 					
 					userInt = input.nextInt();
@@ -305,56 +468,82 @@ public class Manager {
 						String cphone = input.nextLine();
 						Customer cust = new Customer((float) 5.00, cname, cphone, false, true);
 						Data.customerArr.add(cust);
-						//Test display of all customers in file system
-						//displayTable(Data.customerArr);
+						System.out.println("Customer has successfully been added to the file system.");
+						Thread.sleep(1500);
 					}
 					else if(userInt == 2) {
 						clrscr();
-						System.out.print("Please enter the Customer's Name that you want to edit.\nName: ");
-						String Name = input.nextLine();
-						//TODO Add connection to filesystem
-						while(userInt != 4) {
-							clrscr();
-							System.out.println("--------------------");
-							System.out.println("Choose an Option to edit");
-							System.out.println("--------------------\n");
-							//TODO add feature where you can see what your going to edit before selecting
-							System.out.println("0) Name: ");
-							System.out.println("1) Phone: ");
-							System.out.println("2) Suspension Status: ");
-							System.out.println("3) Active Status: ");
-							System.out.println("4) Finished editing");
-							System.out.println("\nInput:  ");
-							input.nextLine();
+						if (Data.customerArr.isEmpty()) {
+							System.out.println("You need to add a Customer before you can edit one.");
+							pressAny();
+						}
+						else {
+							System.out.printf("%-33s|%-11s|%-1s|%-5s|%-5s","Name","Phone","Sales Tax.", "Suspension Status", "Active Status");
+							System.out.print("\n");
+							displayTable(Data.customerArr);
+							System.out.print("\nPlease select a Customer you would like to edit.\nNumber: ");
+							Integer num = input.nextInt();
+							while(userInt != 4) {
+								clrscr();
+								System.out.println("--------------------");
+								System.out.println("Choose an Option to change");
+								System.out.println("--------------------\n");
+								System.out.println("0) Current Name:  " + Data.customerArr.get(num).getName());
+								System.out.println("1) Current Phone:  " + Data.customerArr.get(num).getPhone());
+								System.out.println("2) Current Suspension Status:  " + Data.customerArr.get(num).getSuspensionStatus());
+								System.out.println("3) Current Active Status:  " + Data.customerArr.get(num).getActiveStatus());
+								System.out.println("4) Finished editing");
+								System.out.println("\nInput:  ");
+								userInt = input.nextInt();
+								if(userInt == 0) {
+									clrscr();
+									System.out.print("Please enter the new name for this customer:  ");
+									String newname = input.next();
+									Data.customerArr.get(num).setName(newname);
+									System.out.println("Name has successfully been changed to " + newname + "\n");
+									System.out.printf("%-30s|%-11s|%-1s|%-5s|%-5s","Name","Phone","Sales Tax.", "Suspension Status", "Active Status");
+									System.out.print("\n");
+									System.out.println(Data.customerArr.get(num) + "\n");
+									pressAny();
+								}
+								if(userInt == 1) {
+									clrscr();
+									System.out.print("Please enter the new Phone Number for this customer:  ");
+									String newphone = input.next();
+									Data.customerArr.get(num).setPhone(newphone);
+									System.out.println("Phone Number has successfully been changed to " + newphone + "\n");
+									System.out.printf("%-30s|%-11s|%-1s|%-5s|%-5s","Name","Phone","Sales Tax.", "Suspension Status", "Active Status");
+									System.out.print("\n");
+									System.out.println(Data.customerArr.get(num) + "\n");
+									pressAny();
+								}
+								if(userInt == 2) {
+									clrscr();
+									System.out.print("Would you like to flip the Suspension Status(Y/N):  ");
+									String newsus = input.next();
+									if(newsus.equals("y") || newsus.equals("Y")) {
+										Data.customerArr.get(num).flipSuspensionStatus();
+										System.out.println("SuspensionStatus is now set to " + Data.customerArr.get(num).getSuspensionStatus());
+										pressAny();
+									}
+								}
+								if(userInt == 3) {
+									clrscr();
+									System.out.print("Would you like to flip the Active Status(Y/N):  ");
+									String newsus = input.next();
+									if(newsus.equals("y") || newsus.equals("Y")) {
+										Data.customerArr.get(num).flipActiveStatus();;
+										System.out.println("SuspensionStatus is now set to " + Data.customerArr.get(num).getActiveStatus());
+										pressAny();
+									}
+								}
+							}
 						}
 					}
 				}
 				//change variable so program doesnt shut down on userInt = 0
 				userInt = 99;
 			}
-			
-			//cut content
-			//else if(userInt == 85) {
-				//while(userInt != 0) {
-					//clrscr();
-					//System.out.println("--------------------");
-					//System.out.println("Orders");
-					//System.out.println("--------------------\n\n");
-					//System.out.println("0) Exit to main menu");
-					//System.out.println("1) Add Order");
-					//System.out.println("2) Edit Order Details");
-					//System.out.println("3) View Active Invoices");
-					//System.out.println("4) View Archived Invoices");
-					//System.out.print("\nInput:  ");
-					
-					//userInt = input.nextInt();
-					//input.nextLine();
-					//System.out.print("\n");
-				//}
-				//change variable so program doesnt shut down on userInt = 0
-				//userInt = 99;
-			//}
-			
 			//System settings
 			else if(userInt == 4) {
 				while(userInt != 0) {
@@ -378,7 +567,7 @@ public class Manager {
 						System.out.print("/nConfirmation: ");
 						input.nextLine();
 						//TODO compare new password and confirmation to see if they are the same,
-						// then save the password to password.java
+						// then save the password to data.java
 					}
 				}
 				//change variable so program doesnt shut down on userInt = 0
@@ -412,7 +601,22 @@ public class Manager {
 	    } catch (IOException | InterruptedException ex) {}
 	}
 	public static void displayTable(ArrayList<?> x) {
-        for (int i = 0; i < x.size(); i++)
-        	System.out.println(x.get(i));
+        for (int i = 0; i < x.size(); i++) {
+        	System.out.print(i + ") ");
+			System.out.println(x.get(i));
+        }
     }
+	public static void remove(ArrayList<?> x, int i) {
+		x.remove(i);
+	}
+	 public static void pressAny()
+	 { 
+	        System.out.println("Press Enter key to continue...");
+	        try
+	        {
+	            System.in.read();
+	        }  
+	        catch(Exception e)
+	        {}  
+	 }
 }
