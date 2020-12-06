@@ -591,6 +591,7 @@ public class Manager {
 		
 		input.close();	
 	}
+	//TODO Move these over to the controller class when its made.
 	public static void clrscr(){
 	    //Clears Screen in java
 	    try {
