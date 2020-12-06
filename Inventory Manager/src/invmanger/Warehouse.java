@@ -133,6 +133,10 @@ public class Warehouse implements Serializable {
 		inventory.put(ID, amount);
 	}
 	
+	/**
+	 * Returns a String containing the warehouse's information and a list of all products that are low on stock (stock at 5 or less, but not 0).
+	 * @return a String containing the warehouse's information and a list of all low-stock products in inventory
+	 */
 	public String listLowStock() {
 		String toReturn = "";
 		toReturn = String.format("Warehouse Name: %s%nPhone Number:   %s%nAddress:        %s", this.name, this.phone, this.address);
