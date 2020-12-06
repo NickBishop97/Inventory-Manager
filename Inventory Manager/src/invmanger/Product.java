@@ -166,7 +166,7 @@ public class Product implements Serializable {
 	@Override
 	public String toString() {
 		String toReturn = "";
-		toReturn = String.format("%-5d|%-30s|%-8.2f|%-8.2f|%-20s|%-5d", this.ID, this.name, this.costPrice, this.salePrice, this.category, this.quantitySold);
+		toReturn = String.format("%-30s|%-15.2f|%-15.2f|%-20s|%-15d", this.name, this.costPrice, this.salePrice, this.category, this.quantitySold);
 		//toReturn = String.format("%-5d", this.ID);
 		return toReturn;
 	}
