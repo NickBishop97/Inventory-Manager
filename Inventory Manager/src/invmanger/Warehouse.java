@@ -88,15 +88,26 @@ public class Warehouse implements Serializable {
 		return this.address;
 	}
 	
+	/**
+	 * Given the product ID, increase the product's respective stock count by amt.
+	 * @param ID  the ID of the product whose stock will be increased
+	 * @param amt the amount by which the product's stock will be increased
+	 */
 	public void increaseStock(int ID, int amt) {
 		inventory.put(ID, inventory.get(ID)+amt);
 	}
 	
+	/**
+	 * Given the product ID, reduce the product's respective stock count by amt.
+	 * @param ID  the ID of the product whose stock will be reduced
+	 * @param amt the amount by which the product's stock will be reduced
+	 */
 	public void decreaseStock(int ID, int amt) {
 		inventory.put(ID, inventory.get(ID)-amt);
 	}
 	
 	//Override toString for Warehouse
+	@Override
 	public String toString() {
 		String toReturn = "";
 		toReturn = String.format("Warehouse Name: %s%nPhone Number:   %s%nAddress:        %s", this.name, this.phone, this.address);
