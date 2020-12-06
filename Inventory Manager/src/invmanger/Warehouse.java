@@ -3,7 +3,10 @@ package invmanger;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.LinkedList;
 
 public class Warehouse implements Serializable {
 /**
@@ -130,6 +133,27 @@ public class Warehouse implements Serializable {
 		inventory.put(ID, amount);
 	}
 	
+	public String listLowStock() {
+		String toReturn = "";
+		toReturn = String.format("Warehouse Name: %s%nPhone Number:   %s%nAddress:        %s", this.name, this.phone, this.address);
+		toReturn += String.format("%nInventory Stock:%n%-30s|%-15s|%-15s|%-20s|%-15s|%-10s", "Product Name", "Wholesale Cost", "Retail Price", "Product Category", "Quantity Sold", "In Stock");
+		LinkedList<HashMap.Entry<Integer, Integer>> entries = new LinkedList<HashMap.Entry<Integer, Integer>>(inventory.entrySet());
+		Collections.sort(entries, HashMap.Entry.comparingByValue());
+		Iterator<HashMap.Entry<Integer, Integer>> iter = entries.iterator();
+		while(iter.hasNext()) {
+			HashMap.Entry<Integer, Integer> entry = iter.next();
+			if(entry.getValue() > 0 && entry.getValue() <= 5) {
+				for(Product p : Data.productArr) {
+					if(p.getID() == entry.getKey()) {
+						toReturn += "\n" + p.toString() + "|" + entry.getValue();
+						break;
+					}
+				}
+			}
+		}
+		return toReturn;
+	}
+	
 	
 	//Override toString for Warehouse
 	@Override
@@ -145,7 +169,6 @@ public class Warehouse implements Serializable {
 				for(Product p : Data.productArr) {
 					if(p.getID() == code) {
 						toReturn += "\n" + p.toString() + "|" + inStock;
-						System.out.println("added" + p.toString() + "\n" + p.getID());
 						break;
 					}
 				}
@@ -158,8 +181,18 @@ public class Warehouse implements Serializable {
 		Data.productArr.add(new Product("prod1", 1.00f, 2.00f, "TV"));
 		Data.productArr.add(new Product("prod2", 1.00f, 2.00f, "TV"));
 		Data.productArr.add(new Product("prod3", 1.00f, 2.00f, "Radio"));
+		Data.productArr.add(new Product("prod4", 1.00f, 2.00f, "Radio"));
+		Data.productArr.add(new Product("prod5", 1.00f, 2.00f, "Microwave"));
+		Data.productArr.add(new Product("prod6", 1.00f, 2.00f, "Radio"));
+		Data.productArr.add(new Product("prod7", 100.00f, 20.00f, "Washing Machine"));
 		Warehouse wh1 = new Warehouse("Big Warehouse", "555 W. Bellflower Blvd, Long Beach, CA", "555-555-5555", Data.productArr);
 		wh1.increaseStock(1, 4);
-		System.out.println(wh1);
+		wh1.increaseStock(2, 10);
+		wh1.increaseStock(3, 1);
+		wh1.increaseStock(4, 1);
+		wh1.increaseStock(5, 2);
+		wh1.increaseStock(6, 5);
+		wh1.increaseStock(7, 6);
+		System.out.println(wh1.listLowStock());
 	}
 }
