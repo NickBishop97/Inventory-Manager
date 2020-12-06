@@ -1,6 +1,7 @@
 package invmanger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 /**
  * 
@@ -47,8 +48,8 @@ public class Manager {
 					System.out.println("2) View Understocked Products");
 					System.out.println("3) Add Products");
 					System.out.println("4) Edit Product Details");
-					System.out.println("5) Delete Product");
-					System.out.println("6) Add Warehouse");
+					System.out.println("5) Delete Products");
+					System.out.println("6) Warehouse");
 					System.out.print("\nInput:  ");
 					
 					userInt = input.nextInt();
@@ -72,14 +73,73 @@ public class Manager {
 						clrscr();
 						System.out.println("--------------------");
 						System.out.println("View All Products");
-						System.out.println("--------------------\n\n");
+						System.out.println("--------------------\n");
 						System.out.println("|     Product Name     |Product ID|Sales Price|Stock|");
 						System.out.println("|                      |          |           |     |");
 						System.out.println("|   Pringles Original  |  294758  |   2.99$   | 80  |\n\n");
 					}
-					
-					//TODO finish/cleanup this UI element
-					
+					else if(userInt == 5) {
+						while(userInt != 0) {
+							clrscr();
+							System.out.println("--------------------");
+							System.out.println("Delete Products");
+							System.out.println("--------------------\n");
+							System.out.print("Type a Product name to delete or type 0 to exit:  ");
+							input.nextLine();
+							if(userInt != 0) {
+								System.out.print("\nAre you sure you want to delete this product from the filesystem?(Y/N) ");
+								String z = input.nextLine();
+								if(z.equals("Y")) {
+									//TODO add code to delete product from filesystem
+									System.out.println("The product has been removed successfully.");
+									Thread.sleep(2500);
+								}
+							}
+						}
+					}
+					else if(userInt == 6) {
+						while(userInt != 0) {
+							clrscr();
+							System.out.println("--------------------");
+							System.out.println("Warehouse");
+							System.out.println("--------------------\n");
+							System.out.println("0) Return to Products menu");
+							System.out.println("1) Add Warehouse");
+							System.out.println("2) Add Stock");
+							System.out.print("\nInput:  ");
+							userInt = input.nextInt();
+							input.nextLine();
+							if(userInt == 1) {
+								clrscr();
+								System.out.println("--------------------");
+								System.out.println("Adding Warehouse");
+								System.out.println("--------------------\n");
+								System.out.print("What is the warehouse's Name?\nName:  ");
+								input.nextLine();
+								System.out.print("\nWhat is the warehouse's Phone#?\nPhone#:  ");
+								input.nextLine();
+								System.out.print("\nWhats is the warehouse's Address?\nAddress:  ");
+								input.nextLine();
+								System.out.println("The Warehouse has been added to the filesystem.");
+								//TODO add code to create new warehouse.
+								Thread.sleep(2500);
+							}
+							else if(userInt == 2) {
+								clrscr();
+								System.out.println("--------------------");
+								System.out.println("Adding Stock");
+								System.out.println("--------------------\n");
+								System.out.print("What is the Product Name?\nName:  ");
+								input.nextLine();
+								System.out.print("\nWhat warehouse is the Product located?\nWarehouse:  ");
+								input.nextLine();
+								System.out.print("\nHow much stock is being added?\nAmount:  ");
+								input.nextLine();
+								System.out.println("Stock successfully added.");
+								Thread.sleep(2500);
+							}
+						}
+					}					
 				}
 				//change variable so program doesnt shut down on userInt = 0
 				userInt = 99;
@@ -116,7 +176,8 @@ public class Manager {
 						System.out.print("\nPlease enter Employee's Comissions.\nComissions: ");
 						input.nextLine();
 						//TODO add confirmation to see if all the info is correct, if we have time.
-						System.out.println("New Employee has been created in the database.");
+						System.out.println("New Employee has been added to the filesystem.");
+						Thread.sleep(2500);
 					}
 					else if(userInt == 2 ) {
 						clrscr();
@@ -130,7 +191,7 @@ public class Manager {
 						if(y.equals("Y")) {
 							//TODO Command to delete Employee
 							System.out.println("\nEmployee has been deleted from the database.");
-							Thread.sleep(4000);
+							Thread.sleep(2500);
 						}
 					}
 					else if(userInt == 3) {
@@ -158,14 +219,14 @@ public class Manager {
 							System.out.println("2) Commission: ");
 							System.out.println("3) Finish editing");
 							System.out.println("\nInput:  ");
-							input.nextLine();
+							userInt = input.nextInt();
 							if(userInt == 0) {
 								clrscr();
 								System.out.print("What is the new Name for this Employee: ");
 								input.nextLine();
 								//TODO add connection to filesystem
 								System.out.println("\nEmployee Name has been changed in the database.");
-								Thread.sleep(4000);
+								Thread.sleep(2500);
 							}
 							else if(userInt == 1) {
 								clrscr();
@@ -173,7 +234,7 @@ public class Manager {
 								input.nextLine();
 								//TODO add connection to filesystem
 								System.out.println("\nEmployee Phone# has been changed in the database.");
-								Thread.sleep(4000);
+								Thread.sleep(2500);
 							}
 							else if(userInt == 2) {
 								clrscr();
@@ -181,7 +242,7 @@ public class Manager {
 								input.nextLine();
 								//TODO add connection to filesystem
 								System.out.println("\nEmployee Commission has been changed in the database.");
-								Thread.sleep(4000);
+								Thread.sleep(2500);
 							}
 						}
 					}
@@ -229,7 +290,7 @@ public class Manager {
 							System.out.println("--------------------");
 							System.out.println("Choose an Option to edit");
 							System.out.println("--------------------\n");
-							//TODO add feture where you can see what your going to edit before selecting
+							//TODO add feature where you can see what your going to edit before selecting
 							System.out.println("0) Name: ");
 							System.out.println("1) Phone: ");
 							System.out.println("2) Suspension Status: ");
@@ -322,4 +383,8 @@ public class Manager {
 	            Runtime.getRuntime().exec("clear");
 	    } catch (IOException | InterruptedException ex) {}
 	}
+	public static void displayTable(ArrayList<?> x) {
+        for (int i = 0; i < x.size(); i++)
+            x.toString();
+    }
 }
