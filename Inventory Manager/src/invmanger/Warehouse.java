@@ -194,5 +194,6 @@ public class Warehouse implements Serializable {
 		wh1.increaseStock(6, 5);
 		wh1.increaseStock(7, 6);
 		System.out.println(wh1.listLowStock());
+		System.out.println(wh1);
 	}
 }
