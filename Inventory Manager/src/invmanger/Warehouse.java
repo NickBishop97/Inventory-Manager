@@ -8,7 +8,7 @@ import java.util.Iterator;
 public class Warehouse implements Serializable {
 /**
  * Represents a warehouse owned by the client, which holds Products.
- * @author Nick Bishop
+ * @author Nick Bishop & Alexander Dung
  */
 	private HashMap<Integer, Integer> inventory;
 	private String name;
@@ -28,6 +28,13 @@ public class Warehouse implements Serializable {
 		this.inventory = new HashMap<Integer, Integer>();
 	}
 	
+	/**
+	 * Constructor, assumes input ArrayList of Products is all known products, and none are in stock.
+	 * @param name      the name of the warehouse
+	 * @param address   the location of the warehouse
+	 * @param phone     the phone number of the warehouse
+	 * @param products  list of all possible products the warehouse can have
+	 */
 	public Warehouse(String name, String address, String phone, ArrayList<Product> products) {
 		this.name = name;
 		this.address = address;
@@ -105,6 +112,24 @@ public class Warehouse implements Serializable {
 	public void decreaseStock(int ID, int amt) {
 		inventory.put(ID, inventory.get(ID)-amt);
 	}
+	
+	/**
+	 * Adds a new product ID to the inventory list. Assumes there are none in stock.
+	 * @param ID the ID of the product to add to the inventory
+	 */
+	public void addProduct(int ID) {
+		inventory.put(ID, 0);
+	}
+	
+	/**
+	 * Adds a new product ID to the inventory list, with the input amount in stock.
+	 * @param ID the ID of the product to add to the inventory
+	 * @param amount the number of units of the product that are in stock at this warehouse
+	 */
+	public void addProduct(int ID, int amount) {
+		inventory.put(ID, amount);
+	}
+	
 	
 	//Override toString for Warehouse
 	@Override
