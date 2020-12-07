@@ -66,6 +66,7 @@ public class Manager {
 							System.out.println("--------------------");
 							System.out.println("View All Products");
 							System.out.println("--------------------\n");
+							//TODO BUG: Doesn't show newest product added but shows the rest.
 							displayTablenonum(Data.warehouseArr);
 							pressAny();
 						}
@@ -80,9 +81,10 @@ public class Manager {
 							System.out.println("--------------------");
 							System.out.println("Understocked Products");
 							System.out.println("--------------------\n");
+							//TODO BUG: Not displaying
 							for (int i = 0; i < Data.warehouseArr.size(); i++) {
 								Data.warehouseArr.get(i).listLowStock();
-								System.out.print("\n");
+								System.out.print("\ntest");
 							}
 							pressAny();
 						}
@@ -107,9 +109,6 @@ public class Manager {
 							input.nextLine();
 							System.out.print("\nPlease enter Category Name?\nCategory:  ");
 							String pcat = input.nextLine();
-							System.out.print("\nPlease enter Avaliabe Stock.\nStock:  ");
-							Integer stock = input.nextInt();
-							System.out.print("\n");
 							displayTable(Data.warehouseArr);
 							System.out.print("\n");
 							System.out.print("\nPlease select the Warehouse that this product is located at.\nNumber:  ");
@@ -124,7 +123,6 @@ public class Manager {
 							if(h.equals("Y") || h.equals("y")) {
 								Data.productArr.add(prod);
 								Data.warehouseArr.get(ware).addProduct(Data.productArr.size()-1);
-								Data.warehouseArr.get(ware).increaseStock(Data.productArr.size()-1, stock);
 								System.out.println("New Product has been added to the file system.");
 								pressAny();
 							}
