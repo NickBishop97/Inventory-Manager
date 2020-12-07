@@ -1,6 +1,7 @@
 package invmanger;
 import java.io.Serializable;
 import java.util.*;
+import java.time.LocalDate;
 
 /**
  * Represents an invoice which contains a customers purchase and payment information.
@@ -8,10 +9,10 @@ import java.util.*;
  */
 public class Invoice implements Serializable {
 	private List<Float> receiptAmounts;
-	private List<Date> receiptDates;
+	private List<LocalDate> receiptDates;
 	private List<Product> productList;
 	private float totalCost;
-	private Date dateIssued;
+	private LocalDate dateIssued;
 	private Employee salesPerson;
 	private boolean delivery;
 	private float deliveryCost;
@@ -31,7 +32,7 @@ public class Invoice implements Serializable {
 	 * @param deliveryCost    a float representing the fee associated with the delivery the products to the customer.
 	 * @param deliveryCost    a string representing address which the products are to be deliverd to.
 	 */
-	public Invoice(List<Float> receiptAmounts, List<Date> receiptDates, List<Product> productList, float totalCost, Date dateIssued, Employee salesPerson, boolean delivery, boolean activeStatus, float deliveryCost, String address) {
+	public Invoice(List<Float> receiptAmounts, List<LocalDate> receiptDates, List<Product> productList, float totalCost, LocalDate dateIssued, Employee salesPerson, boolean delivery, boolean activeStatus, float deliveryCost, String address) {
 		this.setreceiptAmounts(receiptAmounts);
 		this.setreceiptDates(receiptDates);
 		this.setProductList(productList);
@@ -54,7 +55,7 @@ public class Invoice implements Serializable {
 	 * @param deliveryCost    a float representing the fee associated with the delivery the products to the customer.
 	 * @param adress    a string representing address which the products are to be deliverd to.
 	 */
-	public Invoice(List<Product> productList, float totalCost, Date dateIssued, Employee salesPerson, float deliveryCost, String address) {
+	public Invoice(List<Product> productList, float totalCost, LocalDate dateIssued, Employee salesPerson, float deliveryCost, String address) {
 		this.setProductList(productList);
 		this.setTotalCost(totalCost);
 		this.setDateIssued(dateIssued);
@@ -73,7 +74,7 @@ public class Invoice implements Serializable {
 	 * @param dateIssued  the date which the invoice was issued to the customer.
 	 * @param salesPerson   the salesPerson who made the sale to the customer.
 	 */
-	public Invoice(List<Product> productList, float totalCost, Date dateIssued, Employee salesPerson) {
+	public Invoice(List<Product> productList, float totalCost, LocalDate dateIssued, Employee salesPerson) {
 		this.setProductList(productList);
 		this.setTotalCost(totalCost);
 		this.setDateIssued(dateIssued);
@@ -105,7 +106,7 @@ public class Invoice implements Serializable {
 	 * Sets the receiptList to the list newreceiptList
 	 * @param newreceiptList new List value to set the invoice's receiptList to
 	 */
-	public void setreceiptDates(List<Date> newreceiptDates) {
+	public void setreceiptDates(List<LocalDate> newreceiptDates) {
 		this.receiptDates = newreceiptDates;
 	}
 
@@ -145,7 +146,7 @@ public class Invoice implements Serializable {
 	 * Returns a date representing the date in which the invoice was issued.
 	 * @return the date in which the invoice was issued.
 	 */
-	public Date getDateIssued() {
+	public LocalDate getDateIssued() {
 		return dateIssued;
 	}
 
@@ -153,7 +154,7 @@ public class Invoice implements Serializable {
 	 * Sets the dateIssued to the date newdateIssued
 	 * @param newdateIssued new date value to set dateIssued to
 	 */
-	public void setDateIssued(Date newdateIssued) {
+	public void setDateIssued(LocalDate newdateIssued) {
 		this.dateIssued = newdateIssued;
 	}
 
@@ -225,7 +226,7 @@ public class Invoice implements Serializable {
 	 * Adds a receipt to the list of receipts for a given invoice.
 	 * @param receipt the receipt that will be added to receiptList
 	 */
-	public void addreceipt(float receiptAmount, Date receiptDate) {
+	public void addreceipt(float receiptAmount, LocalDate receiptDate) {
 		receiptAmounts.add(receiptAmount);
 		receiptDates.add(receiptDate);
 	}
