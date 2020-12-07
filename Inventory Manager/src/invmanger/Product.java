@@ -154,6 +154,22 @@ public class Product implements Serializable {
 	}
 	
 	/**
+	 * Returns the current number that the next Product's ID will be assigned to.
+	 * @return the IDAssign number
+	 */
+	public int getIDCounter() {
+		return this.IDAssign;
+	}
+	
+	/**
+	 * Sets the number that the next Product's ID will be assigned to.
+	 * @param IDA the new ID.
+	 */
+	public void setIDCounter(int IDA) {
+		this.IDAssign = IDA;
+	}
+	
+	/**
 	 * Returns a String containing this Product's:
 	 *  ID, padded to 5 characters;
 	 *  name, padded to 30 characters;

@@ -212,5 +212,30 @@ public class Data implements Serializable
             i.printStackTrace();
         }
     }
+    
+    public static void saveIDCounter(int IDC) {
+    	try {
+    		FileOutputStream fileOut = new FileOutputStream("ID.ser");
+    		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+    		out.writeObject(IDC);
+    		out.close();
+    	} catch (IOException i) {
+    		i.printStackTrace();
+    	}
+    }
+    
+    public static int loadIDCounter(){
+    	int ID = 0;
+        try{
+            FileInputStream fileIn = new FileInputStream("ID.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            ID = (int) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException | ClassNotFoundException i){
+            i.printStackTrace();
+        }
+        return ID;
+    }
 
 }
