@@ -16,6 +16,7 @@ public class Invoice implements Serializable {
 	private boolean delivery;
 	private float deliveryCost;
 	private String address;
+	private boolean activeStatus;
 	
 	/**
 	 * Default constructor
@@ -25,17 +26,19 @@ public class Invoice implements Serializable {
 	 * @param totalCost   the total Cost of all products purchased by the customer for this invoice.
 	 * @param dateIssued  the date which the invoice was issued to the customer.
 	 * @param salesPerson   the salesPerson who made the sale to the customer.
+	 * @param activeStatus		boolean which is true if the invoice is active and false if the invoice is archived.
 	 * @param delivery    a boolean representing if the products are being delivered to the customer.
 	 * @param deliveryCost    a float representing the fee associated with the delivery the products to the customer.
 	 * @param deliveryCost    a string representing address which the products are to be deliverd to.
 	 */
-	public Invoice(List<Float> receiptAmounts, List<Date> receiptDates, List<Product> productList, float totalCost, Date dateIssued, Employee salesPerson, boolean delivery, float deliveryCost, String address) {
+	public Invoice(List<Float> receiptAmounts, List<Date> receiptDates, List<Product> productList, float totalCost, Date dateIssued, Employee salesPerson, boolean delivery, boolean activeStatus, float deliveryCost, String address) {
 		this.setreceiptAmounts(receiptAmounts);
 		this.setreceiptDates(receiptDates);
 		this.setProductList(productList);
 		this.setTotalCost(totalCost);
 		this.setDateIssued(dateIssued);
 		this.setSalesPerson(salesPerson);
+		this.setActiveStatus(activeStatus);
 		this.setDelivery(delivery);
 		this.setDeliveryCost(deliveryCost);
 		this.setAddress(address);
@@ -59,6 +62,7 @@ public class Invoice implements Serializable {
 		this.setDelivery(true);
 		this.setDeliveryCost(deliveryCost);
 		this.setAddress(address);
+		this.setActiveStatus(true);
 	}
 	
 	/**
@@ -77,6 +81,7 @@ public class Invoice implements Serializable {
 		this.setDelivery(false);
 		this.setDeliveryCost(0);
 		this.setAddress("N/A");
+		this.setActiveStatus(true);
 	}
 
 
@@ -233,6 +238,27 @@ public class Invoice implements Serializable {
 	    	toReturn += "\n" + receiptDates.get(i) + "|" + receiptAmounts.get(i);
 	    }
 		return toReturn;
+	}
+
+	public boolean isActiveStatus() {
+		return activeStatus;
+	}
+
+	public void setActiveStatus(boolean activeStatus) {
+		this.activeStatus = activeStatus;
+	}
+	
+	public void updateActiveStatus() {
+		float totalPaid = 0;
+		for(int i = 0; i < receiptAmounts.size(); i++) {
+			totalPaid = totalPaid + receiptAmounts.get(i);
+		}
+		if(totalPaid >= this.totalCost) {
+			setActiveStatus(true);
+		}
+		else {
+			setActiveStatus(false);
+		}
 	}
 
 
