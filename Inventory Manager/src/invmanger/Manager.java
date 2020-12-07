@@ -276,10 +276,14 @@ public class Manager {
 								}
 								Integer ware = input.nextInt();
 								System.out.print("What Warehouse is this product located at.\nNumber:  ");
+								clrscr();
 								displayTable(Data.productArr);
 								System.out.print("\nPlease select the Product you would like to add stock to.\nNumber:  ");
 								Integer num = input.nextInt();
-								Data.warehouseArr.get(ware).increaseStock(Data.productArr.size()-1, num);
+								System.out.print("\nHow much stock would you like to add.\nAmount:  ");
+								Integer stock = input.nextInt();
+								Data.warehouseArr.get(ware).increaseStock(num, stock);
+								pressAny();
 							}
 						}
 					}					
@@ -469,7 +473,7 @@ public class Manager {
 						Customer cust = new Customer((float) 5.00, cname, cphone, false, true);
 						Data.customerArr.add(cust);
 						System.out.println("Customer has successfully been added to the file system.");
-						Thread.sleep(1500);
+						pressAny();
 					}
 					else if(userInt == 2) {
 						clrscr();

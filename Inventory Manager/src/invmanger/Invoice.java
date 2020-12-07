@@ -7,7 +7,8 @@ import java.util.*;
  * @author Bailey Norman
  */
 public class Invoice implements Serializable {
-	private List<Float> receiptList;
+	private List<Float> receiptAmounts;
+	private List<Date> receiptDates;
 	private List<Product> productList;
 	private float totalCost;
 	private Date dateIssued;
@@ -18,7 +19,8 @@ public class Invoice implements Serializable {
 	
 	/**
 	 * Default constructor
-	 * @param receiptList    a list containing all the payments made by the customer to pay off the invoice. 
+	 * @param receiptAmounts    a list containing all the amounts paid by the customer for each receipt. 
+	 * @param receiptDates		a list containing all of the dates on which the receipts were made.
 	 * @param productList    a list containing all the products being pruchased by the customer for this invoice. 
 	 * @param totalCost   the total Cost of all products purchased by the customer for this invoice.
 	 * @param dateIssued  the date which the invoice was issued to the customer.
@@ -27,8 +29,9 @@ public class Invoice implements Serializable {
 	 * @param deliveryCost    a float representing the fee associated with the delivery the products to the customer.
 	 * @param deliveryCost    a string representing address which the products are to be deliverd to.
 	 */
-	public Invoice(List<Float> receiptList, List<Product> productList, float totalCost, Date dateIssued, Employee salesPerson, boolean delivery, float deliveryCost, String address) {
-		this.setreceiptList(receiptList);
+	public Invoice(List<Float> receiptAmounts, List<Date> receiptDates, List<Product> productList, float totalCost, Date dateIssued, Employee salesPerson, boolean delivery, float deliveryCost, String address) {
+		this.setreceiptAmounts(receiptAmounts);
+		this.setreceiptDates(receiptDates);
 		this.setProductList(productList);
 		this.setTotalCost(totalCost);
 		this.setDateIssued(dateIssued);
@@ -48,8 +51,7 @@ public class Invoice implements Serializable {
 	 * @param deliveryCost    a float representing the fee associated with the delivery the products to the customer.
 	 * @param adress    a string representing address which the products are to be deliverd to.
 	 */
-	public Invoice(List<Float> receiptList, List<Product> productList, float totalCost, Date dateIssued, Employee salesPerson, float deliveryCost, String address) {
-		this.setreceiptList(receiptList);
+	public Invoice(List<Product> productList, float totalCost, Date dateIssued, Employee salesPerson, float deliveryCost, String address) {
 		this.setProductList(productList);
 		this.setTotalCost(totalCost);
 		this.setDateIssued(dateIssued);
@@ -62,13 +64,12 @@ public class Invoice implements Serializable {
 	/**
 	 * Without-Delivery constructor, 
 	 * @param receiptList    a list containing all the payments made by the customer to pay off the invoice. 
-	 * @param productList    a list containing all the products being pruchased by the customer for this invoice. 
+	 * @param productList    a list containing all the products being purchased by the customer for this invoice. 
 	 * @param totalCost   the total Cost of all products purchased by the customer for this invoice.
 	 * @param dateIssued  the date which the invoice was issued to the customer.
 	 * @param salesPerson   the salesPerson who made the sale to the customer.
 	 */
-	public Invoice(List<Float> receiptList, List<Product> productList, float totalCost, Date dateIssued, Employee salesPerson) {
-		this.setreceiptList(receiptList);
+	public Invoice(List<Product> productList, float totalCost, Date dateIssued, Employee salesPerson) {
 		this.setProductList(productList);
 		this.setTotalCost(totalCost);
 		this.setDateIssued(dateIssued);
@@ -83,16 +84,24 @@ public class Invoice implements Serializable {
 	 * Returns a List containing all the payments made by the customer to pay off the invoice's total.
 	 * @return this Invoice's receipt List
 	 */
-	public List<Float> getreceiptList() {
-		return receiptList;
+	public List<Float> getreceiptAmounts() {
+		return receiptAmounts;
 	}
 
 	/**
 	 * Sets the receiptList to the list newreceiptList
 	 * @param newreceiptList new List value to set the invoice's receiptList to
 	 */
-	public void setreceiptList(List<Float> newreceiptList) {
-		this.receiptList = newreceiptList;
+	public void setreceiptAmounts(List<Float> newreceiptAmounts) {
+		this.receiptAmounts = newreceiptAmounts;
+	}
+	
+	/**
+	 * Sets the receiptList to the list newreceiptList
+	 * @param newreceiptList new List value to set the invoice's receiptList to
+	 */
+	public void setreceiptDates(List<Date> newreceiptDates) {
+		this.receiptDates = newreceiptDates;
 	}
 
 	/**
@@ -201,7 +210,7 @@ public class Invoice implements Serializable {
 
 	/**
 	 * Sets the Address to the string newAdress
-	 * @param newAddress new address to set the adress to
+	 * @param newAddress new address to set the address to
 	 */
 	public void setAddress(String newAddress) {
 		this.address = newAddress;
@@ -211,8 +220,19 @@ public class Invoice implements Serializable {
 	 * Adds a receipt to the list of receipts for a given invoice.
 	 * @param receipt the receipt that will be added to receiptList
 	 */
-	public void addreceipt(float receipt) {
-		receiptList.add(receipt);
+	public void addreceipt(float receiptAmount, Date receiptDate) {
+		receiptAmounts.add(receiptAmount);
+		receiptDates.add(receiptDate);
+	}
+	
+	public String showreceiptTable() {
+		String toReturn = "";
+		toReturn = String.format("%nReceipts:%n%-15s|%-15s", "Date", "Amount Paid");
+	    for (int i = 0; i < receiptAmounts.size(); i++) {
+	    	
+	    	toReturn += "\n" + receiptDates.get(i) + "|" + receiptAmounts.get(i);
+	    }
+		return toReturn;
 	}
 
 
