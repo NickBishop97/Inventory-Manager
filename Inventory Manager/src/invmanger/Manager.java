@@ -56,6 +56,7 @@ public class Manager {
 					System.out.print("\nInput:  ");
 					userInt = input.nextInt();
 					input.nextLine();
+					//VIEW ALL PRODUCTS ------------------------------------------------------------------------
 					if(userInt == 1) {
 						clrscr();
 						if(Data.productArr.isEmpty()) {
@@ -70,6 +71,7 @@ public class Manager {
 							pressAny();
 						}
 					}
+					//VIEW UNDERSTOCKED PRODUCTS ------------------------------------------------------------------------
 					else if(userInt == 2) {
 						clrscr();
 						if(Data.productArr.isEmpty()) {
@@ -87,6 +89,7 @@ public class Manager {
 							pressAny();
 						}
 					}
+					//ADD NEW PRODUCT ------------------------------------------------------------------------
 					else if(userInt == 3) {
 						clrscr();
 						if(Data.warehouseArr.isEmpty()) {
@@ -105,9 +108,9 @@ public class Manager {
 							System.out.print("\nPlease enter Sale Price\nSale Price: ");
 							Float psale = input.nextFloat();
 							input.nextLine();
-							System.out.print("\nPlease enter Category Name?\nCategory:  ");
+							System.out.print("\nPlease enter Category Name.\nCategory:  ");
 							String pcat = input.nextLine();
-							System.out.print("\nPlease enter Avaliabe Stock.\nStock:  ");
+							System.out.print("\nPlease enter Avaliable Stock.\nStock:  ");
 							Integer stock = input.nextInt();
 							System.out.print("\n");
 							displayTable(Data.warehouseArr);
@@ -123,13 +126,15 @@ public class Manager {
 							String h = input.next();
 							if(h.equals("Y") || h.equals("y")) {
 								Data.productArr.add(prod);
-								Data.warehouseArr.get(ware).addProduct(Data.productArr.size()-1);
-								Data.warehouseArr.get(ware).increaseStock(Data.productArr.size()-1, stock);
+								int code = prod.getID();
+								Data.warehouseArr.get(ware).addProduct(code);
+								Data.warehouseArr.get(ware).increaseStock(code, stock);
 								System.out.println("New Product has been added to the file system.");
 								pressAny();
 							}
 						}
 					}
+					//EDIT PRODUCT ------------------------------------------------------------------------
 					else if(userInt == 4) {
 						clrscr();
 						if(Data.productArr.isEmpty()) {
@@ -213,6 +218,7 @@ public class Manager {
 							}
 						}
 					}
+					//DELETE PRODUCTS ------------------------------------------------------------------------
 					else if(userInt == 5) {
 						clrscr();
 						if(Data.productArr.isEmpty()) {
@@ -238,6 +244,7 @@ public class Manager {
 							}
 						}
 					}
+					//WAREHOUSES ------------------------------------------------------------------------
 					else if(userInt == 6) {
 						while(userInt != 2) {
 							clrscr();
