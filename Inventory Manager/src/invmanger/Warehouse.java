@@ -146,7 +146,7 @@ public class Warehouse implements Serializable {
 		Iterator<HashMap.Entry<Integer, Integer>> iter = entries.iterator();
 		while(iter.hasNext()) {
 			HashMap.Entry<Integer, Integer> entry = iter.next();
-			if(entry.getValue() > 0 && entry.getValue() <= 5) {
+			if(entry.getValue() >= 0 && entry.getValue() <= 5) {
 				for(Product p : Data.productArr) {
 					if(p.getID() == entry.getKey()) {
 						toReturn += "\n" + p.toString() + "|" + entry.getValue();

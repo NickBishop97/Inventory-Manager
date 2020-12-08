@@ -19,6 +19,9 @@ public class Manager {
 		Scanner input = new Scanner(System.in);
 		int userInt = 10;
 		clrscr();
+		System.out.println("--------------------");
+		System.out.println("Inventory Manager");
+		System.out.println("--------------------\n");
 		checkPassword();
 		while(userInt != 0)
 		{
@@ -85,8 +88,8 @@ public class Manager {
 							System.out.println("--------------------\n");
 							//TODO BUG: Not displaying
 							for (int i = 0; i < Data.warehouseArr.size(); i++) {
-								Data.warehouseArr.get(i).listLowStock();
-								System.out.print("\ntest");
+								System.out.print(Data.warehouseArr.get(i).listLowStock());
+								System.out.println("\n");
 							}
 							pressAny();
 						}
@@ -112,12 +115,12 @@ public class Manager {
 							input.nextLine();
 							System.out.print("\nPlease enter Category Name.\nCategory:  ");
 							String pcat = input.nextLine();
-							System.out.print("\nPlease enter Avaliable Stock.\nStock:  ");
-							Integer stock = input.nextInt();
+							clrscr();
+							System.out.println("Warehouses ------------------------------------------------");
 							System.out.print("\n");
 							displayTable(Data.warehouseArr);
-							System.out.print("\n");
-							System.out.print("\nPlease select the Warehouse that this product is located at.\nNumber:  ");
+							System.out.println("-----------------------------------------------------------");
+							System.out.print("Please select the Warehouse that this product is located at.\nNumber:  ");
 							Integer ware = input.nextInt();
 							System.out.print("\n");
 							Product prod = new Product(pname, pcost, psale, pcat);
@@ -130,7 +133,7 @@ public class Manager {
 								Data.productArr.add(prod);
 								int code = prod.getID();
 								Data.warehouseArr.get(ware).addProduct(code);
-								Data.warehouseArr.get(ware).increaseStock(code, stock);
+								Data.warehouseArr.get(ware).increaseStock(code, 0);
 								Data.warehouseArr.get(ware).addProduct(Data.productArr.size()-1);
 								System.out.println("New Product has been added to the file system.");
 								pressAny();
@@ -281,15 +284,17 @@ public class Manager {
 								System.out.println("--------------------");
 								System.out.println("Adding Stock");
 								System.out.println("--------------------\n");
+								System.out.println("    Warehouse Name");
 								for (int i = 0; i < Data.warehouseArr.size(); i++) {
-									System.out.print(i + ") ");
+									System.out.print(i + ")  ");
 									System.out.print(Data.warehouseArr.get(i).getWarehouseID());
 									System.out.print("\n");
 								}
 								System.out.print("What Warehouse is this product located at.\nNumber:  ");
 								Integer ware = input.nextInt();
 								clrscr();
-								displayTable(Data.productArr);
+								System.out.println("Products at Warehouse: " + Data.warehouseArr.get(ware).getWarehouseID());
+								displayTable(Data.warehouseArr.get(ware).getAllProducts());
 								System.out.print("\nPlease select the Product you would like to add stock to.\nNumber:  ");
 								Integer num = input.nextInt();
 								input.nextLine();
@@ -698,6 +703,9 @@ public class Manager {
         for (int i = 0; i < x.size(); i++) {
         	System.out.print(i + ") ");
 			System.out.println(x.get(i));
+			if(x == Data.warehouseArr) {
+				System.out.print("\n");
+			}
         }
     }
 	public static void displayTablenonum(ArrayList<?> x) {
