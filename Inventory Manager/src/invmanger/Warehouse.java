@@ -158,6 +158,25 @@ public class Warehouse implements Serializable {
 		return toReturn;
 	}
 	
+	/**
+	 * Returns an array of all products registered in this Warehouse, regardless of stock count.
+	 * @return an ArrayList containing all instances of Product contained in this Warehouse
+	 */
+	public ArrayList<Product> getAllProducts(){
+		ArrayList<Product> prods = new ArrayList<Product>();
+		Iterator<Integer> productCodes = inventory.keySet().iterator();
+		while(productCodes.hasNext()) {
+			int code = productCodes.next();
+			for(Product currProduct : Data.productArr) {
+				if(currProduct.getID() == code) {
+					prods.add(currProduct);
+					break;
+				}
+			}
+		}
+		return prods;
+	}
+	
 	
 	//Override toString for Warehouse
 	@Override
@@ -189,6 +208,7 @@ public class Warehouse implements Serializable {
 		Data.productArr.add(new Product("prod5", 1.00f, 2.00f, "Microwave"));
 		Data.productArr.add(new Product("prod6", 1.00f, 2.00f, "Radio"));
 		Data.productArr.add(new Product("prod7", 100.00f, 20.00f, "Washing Machine"));
+		Data.productArr.add(new Product("prod8", 100.00f, 20.00f, "Drying Machine"));
 		Warehouse wh1 = new Warehouse("Big Warehouse", "555 W. Bellflower Blvd, Long Beach, CA", "555-555-5555", Data.productArr);
 		wh1.increaseStock(1, 4);
 		wh1.increaseStock(2, 10);
@@ -198,5 +218,9 @@ public class Warehouse implements Serializable {
 		wh1.increaseStock(6, 5);
 		wh1.increaseStock(7, 6);
 		System.out.println(wh1.listLowStock());
+		ArrayList<Product> prods = wh1.getAllProducts();
+		for(Product pr : prods) {
+			System.out.println("hi"+pr);
+		}
 	}
 }
