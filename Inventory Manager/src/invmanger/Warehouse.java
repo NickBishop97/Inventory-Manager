@@ -188,7 +188,7 @@ public class Warehouse implements Serializable {
 		while(productCodes.hasNext()) {
 			int code = productCodes.next();
 			int inStock = inventory.get(code);
-			if(inStock != 0) {
+			if(inStock >= 0) {
 				for(Product p : Data.productArr) {
 					if(p.getID() == code) {
 						toReturn += "\n" + p.toString() + "|" + inStock;
