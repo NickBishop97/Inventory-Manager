@@ -14,6 +14,7 @@ public class Invoice implements Serializable {
 	private float totalCost;
 	private LocalDate dateIssued;
 	private Employee salesPerson;
+	private Customer customer;
 	private boolean delivery;
 	private float deliveryCost;
 	private String address;
@@ -23,21 +24,23 @@ public class Invoice implements Serializable {
 	 * Default constructor
 	 * @param receiptAmounts    a list containing all the amounts paid by the customer for each receipt. 
 	 * @param receiptDates		a list containing all of the dates on which the receipts were made.
-	 * @param productList    a list containing all the products being pruchased by the customer for this invoice. 
+	 * @param productList    a list containing all the products being purchased by the customer for this invoice. 
 	 * @param totalCost   the total Cost of all products purchased by the customer for this invoice.
 	 * @param dateIssued  the date which the invoice was issued to the customer.
+	 * @param customer	the customer who is being issued this invoice.
 	 * @param salesPerson   the salesPerson who made the sale to the customer.
 	 * @param activeStatus		boolean which is true if the invoice is active and false if the invoice is archived.
 	 * @param delivery    a boolean representing if the products are being delivered to the customer.
 	 * @param deliveryCost    a float representing the fee associated with the delivery the products to the customer.
-	 * @param deliveryCost    a string representing address which the products are to be deliverd to.
+	 * @param deliveryCost    a string representing address which the products are to be delivered to.
 	 */
-	public Invoice(List<Float> receiptAmounts, List<LocalDate> receiptDates, List<Product> productList, float totalCost, LocalDate dateIssued, Employee salesPerson, boolean delivery, boolean activeStatus, float deliveryCost, String address) {
+	public Invoice(List<Float> receiptAmounts, List<LocalDate> receiptDates, List<Product> productList, float totalCost, LocalDate dateIssued, Customer customer, Employee salesPerson, boolean delivery, boolean activeStatus, float deliveryCost, String address) {
 		this.setreceiptAmounts(receiptAmounts);
 		this.setreceiptDates(receiptDates);
 		this.setProductList(productList);
 		this.setTotalCost(totalCost);
 		this.setDateIssued(dateIssued);
+		this.setCustomer(customer);
 		this.setSalesPerson(salesPerson);
 		this.setActiveStatus(activeStatus);
 		this.setDelivery(delivery);
@@ -51,14 +54,16 @@ public class Invoice implements Serializable {
 	 * @param productList    a list containing all the products being pruchased by the customer for this invoice. 
 	 * @param totalCost   the total Cost of all products purchased by the customer for this invoice.
 	 * @param dateIssued  the date which the invoice was issued to the customer.
+	 * @param customer	the customer who is being issued this invoice.
 	 * @param salesPerson   the salesPerson who made the sale to the customer.
 	 * @param deliveryCost    a float representing the fee associated with the delivery the products to the customer.
 	 * @param adress    a string representing address which the products are to be deliverd to.
 	 */
-	public Invoice(List<Product> productList, float totalCost, LocalDate dateIssued, Employee salesPerson, float deliveryCost, String address) {
+	public Invoice(List<Product> productList, float totalCost, LocalDate dateIssued,Customer customer, Employee salesPerson, float deliveryCost, String address) {
 		this.setProductList(productList);
 		this.setTotalCost(totalCost);
 		this.setDateIssued(dateIssued);
+		this.setCustomer(customer);
 		this.setSalesPerson(salesPerson);
 		this.setDelivery(true);
 		this.setDeliveryCost(deliveryCost);
@@ -72,12 +77,14 @@ public class Invoice implements Serializable {
 	 * @param productList    a list containing all the products being purchased by the customer for this invoice. 
 	 * @param totalCost   the total Cost of all products purchased by the customer for this invoice.
 	 * @param dateIssued  the date which the invoice was issued to the customer.
+	 * @param customer	the customer who is being issued this invoice.
 	 * @param salesPerson   the salesPerson who made the sale to the customer.
 	 */
-	public Invoice(List<Product> productList, float totalCost, LocalDate dateIssued, Employee salesPerson) {
+	public Invoice(List<Product> productList, float totalCost, LocalDate dateIssued,Customer customer, Employee salesPerson) {
 		this.setProductList(productList);
 		this.setTotalCost(totalCost);
 		this.setDateIssued(dateIssued);
+		this.setCustomer(customer);
 		this.setSalesPerson(salesPerson);
 		this.setDelivery(false);
 		this.setDeliveryCost(0);
@@ -273,7 +280,15 @@ public class Invoice implements Serializable {
 	@Override
 	public String toString() {
 	    String toReturn = "";
-	    toReturn = String.format("%-15.2f|%-15s|%-20s|%-20.2f|%-30s", this.totalCost, this.dateIssued.toString(), this.salesPerson.getName(), this.deliveryCost, this.address);
+	    toReturn = String.format("%-15.2f|%-15s|%-20s|%-20s|%-20.2f|%-30s", this.totalCost, this.dateIssued.toString(),this.customer.getName(), this.salesPerson.getName(), this.deliveryCost, this.address);
 	    return toReturn;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 }
