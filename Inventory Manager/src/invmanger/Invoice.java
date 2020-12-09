@@ -7,6 +7,7 @@ import java.time.LocalDate;
  * Represents an invoice which contains a customers purchase and payment information.
  * @author Bailey Norman
  */
+@SuppressWarnings("serial")
 public class Invoice implements Serializable {
 	private List<Float> receiptAmounts;
 	private List<LocalDate> receiptDates;

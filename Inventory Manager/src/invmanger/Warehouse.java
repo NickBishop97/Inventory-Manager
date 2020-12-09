@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.LinkedList;
 
+@SuppressWarnings("serial")
 public class Warehouse implements Serializable {
 /**
  * Represents a warehouse owned by the client, which holds Products.

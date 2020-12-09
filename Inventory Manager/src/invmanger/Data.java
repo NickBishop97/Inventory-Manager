@@ -7,6 +7,7 @@ import java.util.Date;
  * @author Jaime Alvarenga
  */
 
+@SuppressWarnings("serial")
 public class Data implements Serializable
 {
 	public static Date lastLaunch = new Date();
@@ -34,7 +35,8 @@ public class Data implements Serializable
         }
     }
     
-    public static void loadCustomer(){
+    @SuppressWarnings("unchecked")
+	public static void loadCustomer(){
         /**
          * Loads saved Objects into customer Array
          */
@@ -64,7 +66,8 @@ public class Data implements Serializable
         }
     }
     
-    public static void loadInvoice(){
+    @SuppressWarnings("unchecked")
+	public static void loadInvoice(){
         /**
          * Loads saved Objects into invoice Array
          */
@@ -93,7 +96,8 @@ public class Data implements Serializable
         }
     }
     
-    public static void loadWarehouse(){
+    @SuppressWarnings("unchecked")
+	public static void loadWarehouse(){
         /**
          * Loads saved Objects into warehouse Array
          */
@@ -122,7 +126,8 @@ public class Data implements Serializable
         }
     }
     
-    public static void loadProduct(){
+    @SuppressWarnings("unchecked")
+	public static void loadProduct(){
         /**
          * Loads saved Objects into product Array
          */
@@ -151,7 +156,8 @@ public class Data implements Serializable
         }
     }
     
-    public static void loadEmployee(){
+    @SuppressWarnings("unchecked")
+	public static void loadEmployee(){
         /**
          * Loads saved Objects into employee Array
          */
