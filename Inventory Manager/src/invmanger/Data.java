@@ -1,7 +1,7 @@
 package invmanger;
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * @author Jaime Alvarenga
@@ -10,7 +10,7 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class Data implements Serializable
 {
-	public static Date lastLaunch = new Date();
+	public static LocalDate lastLaunch;
 	public static String password = "";
     public static ArrayList<Invoice> invoiceArr = new ArrayList<Invoice>();
     public static ArrayList<Product> productArr = new ArrayList<Product>();
@@ -211,7 +211,7 @@ public class Data implements Serializable
         try{
             FileInputStream fileIn = new FileInputStream("date.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            lastLaunch = (Date) in.readObject();
+            lastLaunch = (LocalDate) in.readObject();
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException i){
