@@ -133,7 +133,7 @@ public class Manager {
 								Data.productArr.add(prod);
 								int code = prod.getID();
 								Data.warehouseArr.get(ware).addProduct(code);
-								Data.warehouseArr.get(ware).increaseStock(code, 0);
+								//Data.warehouseArr.get(ware).increaseStock(code, 0);
 								Data.warehouseArr.get(ware).addProduct(Data.productArr.size()-1);
 								System.out.println("New Product has been added to the file system.");
 								pressAny();
@@ -312,7 +312,7 @@ public class Manager {
 			}
 
 			
-			//Employees
+			//Employees-------------------------------------------------------------------------------
 			else if(userInt == 2) {
 				while(userInt != 0) {
 					clrscr();
@@ -329,6 +329,7 @@ public class Manager {
 					userInt = input.nextInt();
 					input.nextLine();
 					
+					//Add new employee--------------------------------------------------------------------------------------
 					if(userInt == 1) {
 						clrscr();
 						System.out.println("--------------------");
@@ -355,6 +356,7 @@ public class Manager {
 						}
 						
 					}
+					//Remove employee --------------------------------------------------------------------------------------
 					else if(userInt == 2 ) {
 						clrscr();
 						if(Data.employeeArr.isEmpty()) {
@@ -379,6 +381,7 @@ public class Manager {
 							}
 						}
 					}
+					//Employee Sales -------------------------------------------------------------------------------------------
 					else if(userInt == 3) {
 						clrscr();
 						if(Data.employeeArr.isEmpty()) {
@@ -399,6 +402,7 @@ public class Manager {
 							pressAny();
 						}
 					}
+					//Edit Employee -------------------------------------------------------------------------------------------------
 					else if(userInt == 4) {
 						clrscr();
 						if(Data.employeeArr.isEmpty()) {
@@ -464,7 +468,7 @@ public class Manager {
 			}
 			
 			
-			//Customers
+			//Customers-----------------------------------------------------------------------------
 			else if(userInt == 3) {
 				while(userInt != 0) {
 					clrscr();
@@ -481,6 +485,8 @@ public class Manager {
 					
 					userInt = input.nextInt();
 					input.nextLine();
+					
+					//Add New Customer--------------------------------------------------------------------------------
 					if(userInt == 1) {
 						clrscr();
 						System.out.println("--------------------");
@@ -495,6 +501,7 @@ public class Manager {
 						System.out.println("Customer has successfully been added to the file system.");
 						pressAny();
 					}
+					//Edit Customer-------------------------------------------------------------------------------------------
 					else if(userInt == 2) {
 						clrscr();
 						if (Data.customerArr.isEmpty()) {
@@ -564,49 +571,70 @@ public class Manager {
 							}
 						}
 					}
+					//Create Invoice---------------------------------------------------------------------------------------------
 					else if(userInt == 3) {
+						//TODO Attach customer to Invoice class
 						clrscr();
-						System.out.println("--------------------");
-						System.out.println("Creating Invoice");
-						System.out.println("--------------------\n");
-						List<Product> product =new LinkedList<Product>();
-						float cost = 0;
-						while(userInt == 4) {
-							clrscr();
-							System.out.println("Please select a product from the list to add to the invoice");
-							displayTable(Data.productArr);
-							System.out.println("Enter " + Data.productArr.size() + " to finish entering Products.");
-							Integer num = input.nextInt();
-							if(userInt < Data.productArr.size()) {
-								product.add(Data.productArr.get(num));
-								cost = cost + Data.productArr.get(num).getSalePrice();
-							}
-							else if(userInt == Data.productArr.size()) {
-								break;
-							}
-							else if(userInt > Data.productArr.size()){
-								clrscr();
-								System.out.println("Invaild input, please enter a Product number.");
-								pressAny();
-							}
+						if(Data.productArr.isEmpty()) {
+							System.out.println("You must create a Product before you can create an Invoice");
+							pressAny();
 						}
-						clrscr();
-						System.out.print("Please enter the Month, Day and Year(ex. 01/01/20).\nMonth:  ");
-						Integer month = input.nextInt();
-						System.out.print("\nDay:  ");
-						Integer day = input.nextInt();
-						System.out.print("\nYear:  ");
-						Integer year = input.nextInt();
-						LocalDate date1 = LocalDate.of(year, month, day);
-						clrscr();
-						displayTable(Data.employeeArr);
-						System.out.print("Please select a employee to attach to the Invoice.\nNumber:  ");
-						Employee employee = Data.employeeArr.get(input.nextInt());
-						Invoice in = new Invoice(product, cost, date1, employee);
-						Data.invoiceArr.add(in);
-						System.out.print("Invoice has succsusfully been added to the file system.");
-						pressAny();
+						else if(Data.employeeArr.isEmpty()) {
+							System.out.println("You must create a Employee before you can create an Invoice");
+							pressAny();
+						}
+						else if(Data.customerArr.isEmpty()) {
+							System.out.println("You must create a Customer before you can create an Invoice");
+							pressAny();
+						}
+						else {
+							clrscr();
+							System.out.println("--------------------");
+							System.out.println("Creating Invoice");
+							System.out.println("--------------------\n");
+							List<Product> product =new LinkedList<Product>();
+							float cost = 0;
+							while(userInt != Data.productArr.size()) {
+								clrscr();
+								System.out.println("Please select a product from the list to add to the invoice");
+								System.out.println("Products-----------------------------------------------\n");
+								System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+								displayTable(Data.productArr);
+								System.out.println("-------------------------------------------------------");
+								System.out.println("Enter " + Data.productArr.size() + " to finish entering Products.\nNumber:  ");
+								Integer num = input.nextInt();
+								if(userInt < Data.productArr.size()) {
+									product.add(Data.productArr.get(num));
+									cost = cost + Data.productArr.get(num).getSalePrice();
+								}
+								else if(userInt == Data.productArr.size()) {
+									break;
+								}
+								else if(userInt > Data.productArr.size()){
+									clrscr();
+									System.out.println("Invaild input, please enter a Product number.");
+									pressAny();
+								}
+							}
+							clrscr();
+							System.out.print("Please enter the Month, Day and Year(ex. 01/01/20).\nMonth:  ");
+							Integer month = input.nextInt();
+							System.out.print("\nDay:  ");
+							Integer day = input.nextInt();
+							System.out.print("\nYear:  ");
+							Integer year = input.nextInt();
+							LocalDate date1 = LocalDate.of(year, month, day);
+							clrscr();
+							displayTable(Data.employeeArr);
+							System.out.print("Please select a employee to attach to the Invoice.\nNumber:  ");
+							Employee employee = Data.employeeArr.get(input.nextInt());
+							Invoice in = new Invoice(product, cost, date1, employee);
+							Data.invoiceArr.add(in);
+							System.out.print("Invoice has succsusfully been added to the file system.");
+							pressAny();
+						}
 					}
+					//View Active Invoices------------------------------------------------------------------------
 					if(userInt == 4) {
 						if(Data.invoiceArr.isEmpty()) {
 							System.out.println("You need to create an Invoice before you can view them.");
@@ -617,11 +645,12 @@ public class Manager {
 							System.out.println("--------------------");
 							System.out.println("Viewing Active Invoices");
 							System.out.println("--------------------\n");
-							System.out.print("Showing All Active invoice in File System.");
+							System.out.println("Showing All Active invoice in File System.");
 							displayActiveInvoices();
 							pressAny();
 						}
 					}
+					//Viewing Archived Invoices--------------------------------------------------------------------
 					if(userInt == 5) {
 						if(Data.invoiceArr.isEmpty()) {
 							System.out.println("You need to create an Invoice before you can view them.");
@@ -632,7 +661,7 @@ public class Manager {
 							System.out.println("--------------------");
 							System.out.println("Viewing Archived Invoices");
 							System.out.println("--------------------\n");
-							System.out.print("Showing All Active invoice in File System.");
+							System.out.println("Showing All Active invoice in File System.");
 							displayArchivedInvoices();
 							pressAny();
 						}
@@ -641,7 +670,7 @@ public class Manager {
 				//change variable so program doesnt shut down on userInt = 0
 				userInt = 99;
 			}
-			//System settings
+			//System settings-----------------------------------------------------------------------------------------
 			else if(userInt == 4) {
 				while(userInt != 0) {
 					clrscr();

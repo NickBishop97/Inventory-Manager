@@ -261,6 +261,19 @@ public class Invoice implements Serializable {
 			setActiveStatus(false);
 		}
 	}
+	public String showproductTable() {
+        String toReturn = "";
+        toReturn = String.format("%Products:%n%-20s|%-15s|%-15.2f", "Product Name", "Product ID", "Product Price");
+        for (int i = 0; i < productList.size(); i++) {
 
-
+            toReturn += "\n" + productList.get(i).getName() + "|" + productList.get(i).getID() + productList.get(i).getSalePrice();
+        }
+        return toReturn;
+    }
+	@Override
+	public String toString() {
+	    String toReturn = "";
+	    toReturn = String.format("%-15.2f|%-15s|%-20s|%-20.2f|%-30s", this.totalCost, this.dateIssued.toString(), this.salesPerson.getName(), this.deliveryCost, this.address);
+	    return toReturn;
+	}
 }
