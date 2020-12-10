@@ -13,6 +13,7 @@ public class Invoice implements Serializable {
 	private List<LocalDate> receiptDates;
 	private List<Product> productList;
 	private float totalCost;
+	private float currentCost;
 	private LocalDate dateIssued;
 	private Employee salesPerson;
 	private Customer customer;
@@ -27,6 +28,7 @@ public class Invoice implements Serializable {
 	 * @param receiptDates		a list containing all of the dates on which the receipts were made.
 	 * @param productList    a list containing all the products being purchased by the customer for this invoice. 
 	 * @param totalCost   the total Cost of all products purchased by the customer for this invoice.
+	 * @param currentCost	the current cost of the invoice.
 	 * @param dateIssued  the date which the invoice was issued to the customer.
 	 * @param customer	the customer who is being issued this invoice.
 	 * @param salesPerson   the salesPerson who made the sale to the customer.
@@ -35,11 +37,12 @@ public class Invoice implements Serializable {
 	 * @param deliveryCost    a float representing the fee associated with the delivery the products to the customer.
 	 * @param deliveryCost    a string representing address which the products are to be delivered to.
 	 */
-	public Invoice(List<Float> receiptAmounts, List<LocalDate> receiptDates, List<Product> productList, float totalCost, LocalDate dateIssued, Customer customer, Employee salesPerson, boolean delivery, boolean activeStatus, float deliveryCost, String address) {
+	public Invoice(List<Float> receiptAmounts, List<LocalDate> receiptDates, List<Product> productList, float totalCost, float currentCost, LocalDate dateIssued, Customer customer, Employee salesPerson, boolean delivery, boolean activeStatus, float deliveryCost, String address) {
 		this.setreceiptAmounts(receiptAmounts);
 		this.setreceiptDates(receiptDates);
 		this.setProductList(productList);
 		this.setTotalCost(totalCost);
+		this.setCurrentCost(currentCost);
 		this.setDateIssued(dateIssued);
 		this.setCustomer(customer);
 		this.setSalesPerson(salesPerson);
@@ -238,16 +241,29 @@ public class Invoice implements Serializable {
 		receiptAmounts.add(receiptAmount);
 		receiptDates.add(receiptDate);
 	}
+	public void addProduct(Product pro){
+		this.productList.add(pro);
+		}
 	
-	public String showreceiptTable() {
-		String toReturn = "";
-		toReturn = String.format("%nReceipts:%n%-15s|%-15s", "Date", "Amount Paid");
-	    for (int i = 0; i < receiptAmounts.size(); i++) {
-	    	
-	    	toReturn += "\n" + receiptDates.get(i) + "|" + receiptAmounts.get(i);
-	    }
-		return toReturn;
+	public void showreceiptTable() {
+		if(receiptAmounts.size() == 0) {
+			System.out.printf("%-10s|%-10s", "", "No receipts attached to this Invoice");
+		}
+		else {
+		    for (int i = 0; i < receiptAmounts.size(); i++) {
+		    	System.out.print(String.format("%-15s|%-15s", receiptDates.get(i).toString(), receiptAmounts.get(i).toString()));
+		    	System.out.print("\n");
+		    }
+		}
+		
 	}
+	public void showproductTable() {
+        for (int i = 0; i < productList.size(); i++) {
+        	System.out.print(String.format("%-20s|%-15s|%-15.2f",productList.get(i).getName(), productList.get(i).getID(),productList.get(i).getSalePrice()));
+        	System.out.print("\n");
+        }
+        
+    }
 
 	public boolean isActiveStatus() {
 		return activeStatus;
@@ -269,15 +285,7 @@ public class Invoice implements Serializable {
 			setActiveStatus(false);
 		}
 	}
-	public String showproductTable() {
-        String toReturn = "";
-        toReturn = String.format("%Products:%n%-20s|%-15s|%-15.2f", "Product Name", "Product ID", "Product Price");
-        for (int i = 0; i < productList.size(); i++) {
-
-            toReturn += "\n" + productList.get(i).getName() + "|" + productList.get(i).getID() + productList.get(i).getSalePrice();
-        }
-        return toReturn;
-    }
+	
 	@Override
 	public String toString() {
 	    String toReturn = "";
@@ -292,4 +300,22 @@ public class Invoice implements Serializable {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+	
+	public void compoundtotal() {
+		double newtotal = currentCost;
+		for (int i = 0; i < receiptAmounts.size(); i++) {
+			newtotal = newtotal - receiptAmounts.get(i);
+		}
+		newtotal = newtotal + newtotal*.02;
+		this.currentCost = (float) newtotal;
+	}
+
+	public float getCurrentCost() {
+		return currentCost;
+	}
+
+	public void setCurrentCost(float currentCost) {
+		this.currentCost = currentCost;
+	}
+		
 }

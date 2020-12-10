@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Represents a Product in the client's Warehouse or general product inventory.
  * @author Alexander Dung
  */
+@SuppressWarnings("serial")
 public class Product implements Serializable {
 	private String name;
 	private float costPrice;
@@ -157,6 +158,7 @@ public class Product implements Serializable {
 	 * Returns the current number that the next Product's ID will be assigned to.
 	 * @return the IDAssign number
 	 */
+	@SuppressWarnings("static-access")
 	public int getIDCounter() {
 		return this.IDAssign;
 	}
@@ -165,6 +167,7 @@ public class Product implements Serializable {
 	 * Sets the number that the next Product's ID will be assigned to.
 	 * @param IDA the new ID.
 	 */
+	@SuppressWarnings("static-access")
 	public void setIDCounter(int IDA) {
 		this.IDAssign = IDA;
 	}

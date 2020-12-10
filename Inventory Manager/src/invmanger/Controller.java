@@ -1,4 +1,5 @@
 package invmanger;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -6,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 /**
- * author: Jaime Alvarenga
+ * author: Nick Bishop & Jaime Alvarenga
  */
 public class Controller {
 	static Scanner input = new Scanner(System.in);
@@ -19,16 +20,6 @@ public class Controller {
      * call Controller.login in the start of Manager. If the password is correct it will
      * simply proceed with manager.
      */
-    public void login(){
-        String password = " ";
-        System.out.println("Please enter password: ");
-        password = input.nextLine();
-
-        while(!(password.equals(Data.password))){
-            System.out.println("Invalid password. Try again: ");
-            password = input.nextLine();
-        }
-    }
 
     public static void viewProducts(){
     	clrscr();
@@ -159,13 +150,16 @@ public class Controller {
 			System.out.print(Data.warehouseArr.get(i).getWarehouseID());
 			System.out.print("\n");
 		}
-		System.out.print("What Warehouse is this product located at.\nNumber:  ");
+		//TODO fix bug with adding stock. Nothing happens when you add stock.
+		System.out.print("\nWhat Warehouse is this product located at.\nNumber:  ");
 		Integer ware = input.nextInt();
 		clrscr();
 		System.out.println("Products at Warehouse: " + Data.warehouseArr.get(ware).getWarehouseID());
+		System.out.println("-----------------------------------------------------------------------------");
 		displayTable(Data.warehouseArr.get(ware).getAllProducts());
+		System.out.println("-----------------------------------------------------------------------------");
 		System.out.print("\nPlease select the Product you would like to add stock to.\nNumber:  ");
-		Integer num = input.nextInt();
+		Integer num = input.nextInt(); 
 		input.nextLine();
 		System.out.print("\nHow much stock would you like to add.\nAmount:  ");
 		Integer stock = input.nextInt();
@@ -201,6 +195,52 @@ public class Controller {
 		Customer cust = new Customer(5, cname, cphone, false, true);
 		Data.customerArr.add(cust);
 		System.out.println("Customer has successfully been added to the file system.");
+		pressAny();
+    }
+    public static void addInvoice(int userInt){
+    	List<Product> product =new LinkedList<Product>();
+		float cost = 0;
+		while(userInt != Data.productArr.size()) {
+			clrscr();
+			System.out.println("Please select a product from the list to add to the invoice");
+			System.out.println("Products-----------------------------------------------\n");
+			System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+			displayTable(Data.productArr);
+			System.out.println("-------------------------------------------------------");
+			System.out.println("Enter " + Data.productArr.size() + " to finish entering Products.\nNumber:  ");
+			Integer num = input.nextInt();
+			if(userInt >= Data.productArr.size() && userInt < Data.productArr.size()) {
+				product.add(Data.productArr.get(num));
+				cost = cost + Data.productArr.get(num).getSalePrice();
+			}
+			else if(userInt == Data.productArr.size()) {
+				break;
+			}
+			else{
+				clrscr();
+				System.out.println("Invaild input, please enter a Product number.");
+				pressAny();
+			}
+		}
+		clrscr();
+		System.out.print("Please enter the Month, Day and Year(ex. 01/01/20).\nMonth:  ");
+		Integer month = input.nextInt();
+		System.out.print("\nDay:  ");
+		Integer day = input.nextInt();
+		System.out.print("\nYear:  ");
+		Integer year = input.nextInt();
+		LocalDate date1 = LocalDate.of(year, month, day);
+		clrscr();
+		displayTable(Data.customerArr);
+		System.out.print("Please select a customer to add to this Invoice.\nNumber");
+		Customer customer = Data.customerArr.get(input.nextInt());
+		clrscr();
+		displayTable(Data.employeeArr);
+		System.out.print("Please select a employee to attach to the Invoice.\nNumber:  ");
+		Employee employee = Data.employeeArr.get(input.nextInt());
+		Invoice in = new Invoice(product, cost, date1, customer, employee);
+		Data.invoiceArr.add(in);
+		System.out.print("Invoice has succsusfully been added to the file system.");
 		pressAny();
     }
     public static void deleteProduct(int userInt){
@@ -378,55 +418,8 @@ public class Controller {
 			}
 		}
     }
-
-    public static void addInvoice(int userInt){
-    	List<Product> product =new LinkedList<Product>();
-		float cost = 0;
-		while(userInt != Data.productArr.size()) {
-			clrscr();
-			System.out.println("Please select a product from the list to add to the invoice");
-			System.out.println("Products-----------------------------------------------\n");
-			System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
-			displayTable(Data.productArr);
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Enter " + Data.productArr.size() + " to finish entering Products.\nNumber:  ");
-			Integer num = input.nextInt();
-			if(userInt >= Data.productArr.size() && userInt < Data.productArr.size()) {
-				product.add(Data.productArr.get(num));
-				cost = cost + Data.productArr.get(num).getSalePrice();
-			}
-			else if(userInt == Data.productArr.size()) {
-				break;
-			}
-			else{
-				clrscr();
-				System.out.println("Invaild input, please enter a Product number.");
-				pressAny();
-			}
-		}
-		clrscr();
-		System.out.print("Please enter the Month, Day and Year(ex. 01/01/20).\nMonth:  ");
-		Integer month = input.nextInt();
-		System.out.print("\nDay:  ");
-		Integer day = input.nextInt();
-		System.out.print("\nYear:  ");
-		Integer year = input.nextInt();
-		LocalDate date1 = LocalDate.of(year, month, day);
-		clrscr();
-		displayTable(Data.customerArr);
-		System.out.print("Please select a customer to add to this Invoice.\nNumber");
-		Customer customer = Data.customerArr.get(input.nextInt());
-		clrscr();
-		displayTable(Data.employeeArr);
-		System.out.print("Please select a employee to attach to the Invoice.\nNumber:  ");
-		Employee employee = Data.employeeArr.get(input.nextInt());
-		Invoice in = new Invoice(product, cost, date1, customer, employee);
-		Data.invoiceArr.add(in);
-		System.out.print("Invoice has succsusfully been added to the file system.");
-		pressAny();
-    }
     
-    //Not a visable function-----------------------------------------------------------------------------------
+    //Non-visable functions-------------------------------------------------------------------------------------------------------------------------------------------------
     public static void clrscr(){
 	    //Clears Screen
 	    try {
@@ -438,6 +431,7 @@ public class Controller {
 	            Runtime.getRuntime().exec("clear");
 	    } catch (IOException | InterruptedException ex) {}
 	}
+    
     public static void pressAny()
 	 { 
 	        System.out.println("Press Enter key to continue...");
@@ -448,6 +442,7 @@ public class Controller {
 	        catch(Exception e)
 	        {}  
 	 }
+    
     public static void displayTable(ArrayList<?> x) {
         for (int i = 0; i < x.size(); i++) {
         	System.out.print(i + ") ");
@@ -457,16 +452,19 @@ public class Controller {
 			}
         }
     }
+    
 	public static void displayTablenonum(ArrayList<?> x) {
 		 for (int i = 0; i < x.size(); i++) {
 				System.out.println(x.get(i));
 				System.out.print("\n");
 	        }
 	}
+	
 	public static void remove(ArrayList<?> x, int i) {
 		x.remove(i);
 	}
-	 public static void checkPassword() {
+	
+	 public static void login() {
 	        @SuppressWarnings("resource")
 			Scanner input = new Scanner(System.in);
 	        String inputPassword = "";
@@ -474,14 +472,16 @@ public class Controller {
 
 	            System.out.print("Enter a new Password:  ");
 	            Data.password = input.nextLine();
+	            Data.savePassword();
 	        }
 	        else{
-	            while(inputPassword != Data.password) {
+	            while(!Data.password.equals(inputPassword)) {
 	                System.out.print("Enter Password:  ");
 	                inputPassword = input.nextLine();
 	            }
 	        }
 	    }
+	 
 	 public static boolean passwordValidation(String inputPassword) {
       if(inputPassword == Data.password) {
           return true;
@@ -489,7 +489,72 @@ public class Controller {
           return false;
       }
   }
+	 
   public static void setPassword(String newPassword) {
       Data.password = newPassword;
+      Data.savePassword();
+  }
+  
+  public static void loadeverything() {
+	  File pass = new File("password.ser");
+	  File prod = new File("product.ser");
+	  File ware = new File("warehouse.ser");
+	  File ID = new File("ID.ser");
+	  File date = new File("date.ser");
+	  File invoice = new File("invoice.ser");
+	  File cus = new File("customer.ser");
+	  File emp = new File("employee.ser");
+	  if(pass.exists()) {
+		  Data.loadPassword();
+	  }
+	  if(prod.exists()) {
+		  Data.loadProduct();
+	  }
+	  if(ware.exists()) {
+		  Data.loadWarehouse();
+	  }
+	  if(ID.exists()) {
+		  Data.loadIDCounter();
+	  }
+	  if(date.exists()) {
+		  Data.loadDate();
+	  }
+	  else {
+		  Data.lastLaunch = LocalDate.now();
+	  }
+	  if(invoice.exists()) {
+		  Data.loadInvoice();
+	  }
+	  if(cus.exists()) {
+		  Data.loadCustomer();
+	  }
+	  if(emp.exists()) {
+		  Data.loadEmployee();
+	  }
+  }
+  
+  public static void compoundTotal() {
+      LocalDate currentDate = LocalDate.now();
+      if(!currentDate.isEqual(Data.lastLaunch)) {
+          //program has not been run today
+          for (int i = 0; i < Data.invoiceArr.size(); i++) {
+              boolean isactive = Data.invoiceArr.get(i).isActiveStatus();
+              boolean ispastdue = currentDate.minusDays(30).isAfter(Data.invoiceArr.get(i).getDateIssued());
+              if(isactive && ispastdue) {
+                  Data.invoiceArr.get(i).compoundtotal();
+              }
+          }
+          Data.lastLaunch = currentDate;
+      }
+  }
+  
+  public static void printinvoiceRTable(int x) {
+      System.out.print(String.format("%nReceipts:%n%-15s|%-15s", "Date", "Amount Paid"));
+      Data.invoiceArr.get(x).showreceiptTable();
+      }
+
+  public static void printinvoicePTable(int x) {
+      System.out.print(String.format("%Products:%n%-20s|%-15s|%-15s", "Product Name", "Product ID", "Product Price"));
+      Data.invoiceArr.get(x).showproductTable();
   }
 }
