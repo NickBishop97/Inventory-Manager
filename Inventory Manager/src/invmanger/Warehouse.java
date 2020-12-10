@@ -56,8 +56,6 @@ public class Warehouse implements Serializable {
 		this.name = newName;
 	}
 	
-	//public void addStock()
-	//public void removeStock()
 	/**
 	 * Returns the warehouse's ID number
 	 * @return this warehouse's ID number
@@ -104,7 +102,9 @@ public class Warehouse implements Serializable {
 	 * @param amt the amount by which the product's stock will be increased
 	 */
 	public void increaseStock(int ID, int amt) {
-		inventory.put(ID, inventory.get(ID)+amt);
+		inventory.put(ID, (inventory.get(ID)+amt));
+		int added = inventory.get(ID);
+        System.out.print("\n" + added + "\n");
 	}
 	
 	/**

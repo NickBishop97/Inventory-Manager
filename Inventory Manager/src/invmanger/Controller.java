@@ -20,7 +20,7 @@ public class Controller {
      * call Controller.login in the start of Manager. If the password is correct it will
      * simply proceed with manager.
      */
-
+    //Views-----------------------------------------------------------------------------------------
     public static void viewProducts(){
     	clrscr();
 		if(Data.productArr.isEmpty()) {
@@ -85,7 +85,7 @@ public class Controller {
        }
        pressAny();
    }
-
+   //ADDS----------------------------------------------------------------------------------------------------------------
     public static void addProduct(){
     	Controller.clrscr();
 		if(Data.warehouseArr.isEmpty()) {
@@ -124,7 +124,7 @@ public class Controller {
 				Data.productArr.add(prod);
 				int code = prod.getID();
 				Data.warehouseArr.get(ware).addProduct(code);
-				//Data.warehouseArr.get(ware).increaseStock(code, 0);
+				Data.warehouseArr.get(ware).increaseStock(code, 0);
 				Data.warehouseArr.get(ware).addProduct(Data.productArr.size()-1);
 				System.out.println("New Product has been added to the file system.");
 				pressAny();
@@ -144,28 +144,33 @@ public class Controller {
 		pressAny();
     }
     public static void addStock() {
-    	System.out.println("    Warehouse Name");
-		for (int i = 0; i < Data.warehouseArr.size(); i++) {
-			System.out.print(i + ")  ");
-			System.out.print(Data.warehouseArr.get(i).getWarehouseID());
-			System.out.print("\n");
-		}
-		//TODO fix bug with adding stock. Nothing happens when you add stock.
-		System.out.print("\nWhat Warehouse is this product located at.\nNumber:  ");
-		Integer ware = input.nextInt();
-		clrscr();
-		System.out.println("Products at Warehouse: " + Data.warehouseArr.get(ware).getWarehouseID());
-		System.out.println("-----------------------------------------------------------------------------");
-		displayTable(Data.warehouseArr.get(ware).getAllProducts());
-		System.out.println("-----------------------------------------------------------------------------");
-		System.out.print("\nPlease select the Product you would like to add stock to.\nNumber:  ");
-		Integer num = input.nextInt(); 
-		input.nextLine();
-		System.out.print("\nHow much stock would you like to add.\nAmount:  ");
-		Integer stock = input.nextInt();
-		input.nextLine();
-		Data.warehouseArr.get(ware).increaseStock(num, stock);
-		pressAny();
+    	if(Data.productArr.isEmpty()) {
+    		System.out.println("You need to add a product before you can add stock");
+    	}
+    	else {
+	    	System.out.println("    Warehouse Name");
+			for (int i = 0; i < Data.warehouseArr.size(); i++) {
+				System.out.print(i + ")  ");
+				System.out.print(Data.warehouseArr.get(i).getWarehouseID());
+				System.out.print("\n");
+			}
+			//TODO fix bug with adding stock. Nothing happens when you add stock.
+			System.out.print("\nWhat Warehouse is this product located at.\nNumber:  ");
+			Integer ware = input.nextInt();
+			clrscr();
+			System.out.println("Products at Warehouse: " + Data.warehouseArr.get(ware).getWarehouseID());
+			System.out.println("-----------------------------------------------------------------------------");
+			displayTable(Data.warehouseArr.get(ware).getAllProducts());
+			System.out.println("-----------------------------------------------------------------------------");
+			System.out.print("\nPlease select the Product you would like to add stock to.\nNumber:  ");
+			Integer num = input.nextInt(); 
+			input.nextLine();
+			System.out.print("\nHow much stock would you like to add.\nAmount:  ");
+			Integer stock = input.nextInt();
+			input.nextLine();
+			Data.warehouseArr.get(ware).increaseStock(num, stock);
+			pressAny();
+    	}
     }
     public static void addEmployee() {
     	System.out.print("Please enter Employee's Name.\nName: ");
@@ -243,6 +248,7 @@ public class Controller {
 		System.out.print("Invoice has succsusfully been added to the file system.");
 		pressAny();
     }
+    //Delete----------------------------------------------------------------------------------------------------
     public static void deleteProduct(int userInt){
     	clrscr();
 		if(Data.productArr.isEmpty()) {
@@ -252,6 +258,7 @@ public class Controller {
 		else {
 			while(userInt != 0) {
 				clrscr();
+				//TODO breaks when there's no pdouct left
 				System.out.println("--------------------");
 				System.out.println("Delete Products");
 				System.out.println("--------------------\n");
@@ -264,6 +271,7 @@ public class Controller {
 					remove(Data.productArr, num);
 					System.out.println("Product has been deleted from the File System.");
 					pressAny();
+					break;
 				}
 			}
 		}
@@ -282,6 +290,7 @@ public class Controller {
 			pressAny();
 		}
     }
+    //edits------------------------------------------------------------------------------------------------------------------
     public static void editProductDetails(int userInt, int num){
 		if(userInt == 0) {
 			clrscr();

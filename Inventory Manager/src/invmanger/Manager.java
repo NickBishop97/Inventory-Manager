@@ -1,5 +1,6 @@
 package invmanger;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 /**
  * 
@@ -9,15 +10,17 @@ import java.util.Scanner;
 
 public class Manager {
 
-	public static void main(String[] args) throws InterruptedException 
+	public static void main(String[] args) throws InterruptedException
 	{
 		Scanner input = new Scanner(System.in);
 		int userInt = 10;
+		Controller.loadeverything();
+		Controller.compoundTotal();
 		Controller.clrscr();
 		System.out.println("--------------------");
 		System.out.println("Inventory Manager");
 		System.out.println("--------------------\n");
-		Controller.checkPassword();
+		Controller.login();
 		while(userInt != 0)
 		{
 			Controller.clrscr();
@@ -66,6 +69,8 @@ public class Manager {
 					else if(userInt == 3) {
 						Controller.addProduct();
 						Data.saveProduct();
+						Data.saveIDCounter(Data.productArr.size()-1);
+						Data.saveWareHouse();
 					}
 					//EDIT PRODUCT ------------------------------------------------------------------------
 					else if(userInt == 4) {
@@ -101,6 +106,8 @@ public class Manager {
 					//DELETE PRODUCTS ------------------------------------------------------------------------
 					else if(userInt == 5) {
 						Controller.deleteProduct(userInt);
+						Data.saveProduct();
+						Data.saveIDCounter(Data.productArr.size()-1);
 					}
 					//WAREHOUSES ------------------------------------------------------------------------
 					else if(userInt == 6) {
@@ -240,8 +247,9 @@ public class Manager {
 					System.out.println("1) Add Customer");
 					System.out.println("2) Edit Customer Details");
 					System.out.println("3) Create Invoice");
-					System.out.println("4) View Active Invoices");
-					System.out.println("5) View Archived Invoices");
+					System.out.println("4) View Invoice");
+					System.out.println("5) View Active Invoices");
+					System.out.println("6) View Archived Invoices");
 					System.out.print("\nInput:  ");
 					
 					userInt = input.nextInt();
@@ -311,8 +319,85 @@ public class Manager {
 							Data.saveInvoice();							
 						}
 					}
+					//viewing invoices---------------------------------------------------------------------------
+					else if(userInt == 4) {
+						Controller.clrscr();
+						if(Data.invoiceArr.isEmpty()){
+							System.out.println("You must create an Invoice before you can view one.");
+						}
+						System.out.println("--------------------");
+						System.out.println("Viewing Invoices");
+						System.out.println("--------------------\n");
+						System.out.println("Invoices---------------------------------------------");
+						String n = "";
+						Controller.displayTable(Data.invoiceArr);
+						System.out.print("Please select an invoice to view\nNumber:  ");
+						Integer num = input.nextInt();
+						while(!n.equals("n") || !n.equals("N"))
+						{
+							n = "";
+							Controller.clrscr();
+							System.out.printf("%-15s|%-15s|%-20s|%-20s|%-20s|%-30s", "Total Cost", "Date Issued", "customer", "Sales Person", "DeliveryCost", "Address");
+							System.out.print("\n" +Data.invoiceArr.get(num));
+							System.out.println("\nAttached Products");
+							Controller.printinvoicePTable(num);
+							System.out.println("\nAttacked Recipts");
+							Controller.printinvoiceRTable(num);
+							if(n.equals("Y") || n.equals("y")) {
+								while(userInt != 0) {
+									System.out.println("--------------------");
+									System.out.println("Adding Product/Receipt");
+									System.out.println("--------------------\n");
+									System.out.println("0) Return to Invoice");
+									System.out.println("1) Add Product");
+									System.out.println("2) Add Receipt");
+									input.nextInt();
+									if(userInt == 1) {
+										float cost = 0;
+										while(userInt != Data.productArr.size()) {
+											Controller.clrscr();
+											System.out.println("Please select a product from the list to add to the invoice");
+											System.out.println("Products-----------------------------------------------\n");
+											System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+											Controller.displayTable(Data.productArr);
+											System.out.println("-------------------------------------------------------");
+											System.out.println("Enter " + Data.productArr.size() + " to finish adding Products.\nNumber:  ");
+											Integer one = input.nextInt();
+											if(userInt >= Data.productArr.size() && userInt < Data.productArr.size()) {
+												Data.invoiceArr.get(num).addProduct(Data.productArr.get(one));
+												cost = cost + Data.productArr.get(one).getSalePrice();
+											}
+											else{
+												Data.invoiceArr.get(num).setTotalCost(Data.invoiceArr.get(num).getCurrentCost() + cost);
+												Controller.clrscr();
+												System.out.println("Invaild input, please enter a Product number.");
+												Controller.pressAny();
+											}
+										}
+									}
+									if(userInt == 2) {
+										Controller.clrscr();
+										LocalDate currentDate = LocalDate.now();
+										System.out.println("What is the total for this receipt:  ");
+										Float total = input.nextFloat();
+										Data.invoiceArr.get(num).addreceipt(total, currentDate);
+									}
+								}
+							}
+							else if(n.equals("") || n.equals("")) {
+								System.out.print("\nWould you like to add a receipt or product?\n(Y/N):  ");
+								n = input.next();
+								input.nextLine();
+							}
+							else {
+								Controller.clrscr();
+								System.out.println("Invalid Input");
+								Controller.pressAny();
+							}
+						}
+					}
 					//View Active Invoices------------------------------------------------------------------------
-					if(userInt == 4) {
+					else if(userInt == 5) {
 						if(Data.invoiceArr.isEmpty()) {
 							System.out.println("You need to create an Invoice before you can view them.");
 							Controller.pressAny();
@@ -327,7 +412,7 @@ public class Manager {
 						}
 					}
 					//Viewing Archived Invoices--------------------------------------------------------------------
-					if(userInt == 5) {
+					else if(userInt == 6) {
 						if(Data.invoiceArr.isEmpty()) {
 							System.out.println("You need to create an Invoice before you can view them.");
 							Controller.pressAny();
