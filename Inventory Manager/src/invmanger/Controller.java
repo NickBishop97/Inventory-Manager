@@ -276,6 +276,7 @@ public class Controller {
 			}
 		}
     }
+    
     public static void deleteEmployee() {
     	System.out.printf("%-30s|%-11s|%-10s|%-1s","Name","Phone","Commi.","Total Sales");
 		System.out.print("\n");
