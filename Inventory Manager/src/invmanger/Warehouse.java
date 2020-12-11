@@ -103,10 +103,15 @@ public class Warehouse implements Serializable {
 	 */
 	public void increaseStock(int ID, int amt) {
 		inventory.put(ID, (inventory.get(ID)+amt));
-		int added = inventory.get(ID);
-        System.out.print("\n" + added + "\n");
 	}
-	
+	/**
+	 * Prints out the give product stock.
+	 * @param ID  the ID of the product whose stock will be increased
+	 * @return 
+	 */
+	public Integer getStock(int ID) {
+		return inventory.get(ID);
+	}
 	/**
 	 * Given the product ID, reduce the product's respective stock count by amt.
 	 * @param ID  the ID of the product whose stock will be reduced

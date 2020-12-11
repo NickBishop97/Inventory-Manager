@@ -1,6 +1,8 @@
 package invmanger;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 /**
  * 
@@ -10,7 +12,7 @@ import java.util.Scanner;
 
 public class Manager {
 
-	public static void main(String[] args) throws InterruptedException
+	public static void main(String[] args) 
 	{
 		Scanner input = new Scanner(System.in);
 		int userInt = 10;
@@ -27,8 +29,6 @@ public class Manager {
 			System.out.println("--------------------");
 			System.out.println("Main Menu");
 			System.out.println("--------------------\n");
-			
-			
 			System.out.println("0)  Shut Down");
 			System.out.println("1)  Products");
 			System.out.println("2)  Employees");
@@ -158,8 +158,8 @@ public class Manager {
 					System.out.println("3) View Employee Sales");
 					System.out.println("4) Edit Employee Details");
 					System.out.print("\nInput:  ");
-					
 					userInt = input.nextInt();
+					System.out.print("\n");
 					input.nextLine();
 					
 					//Add new employee--------------------------------------------------------------------------------------
@@ -287,8 +287,9 @@ public class Manager {
 								System.out.println("2) Current Suspension Status:  " + Data.customerArr.get(num).getSuspensionStatus());
 								System.out.println("3) Current Active Status:  " + Data.customerArr.get(num).getActiveStatus());
 								System.out.println("4) Finished editing");
-								System.out.println("\nInput:  ");
+								System.out.print("\nInput:  ");
 								userInt = input.nextInt();
+								input.nextLine();
 								Controller.editCustomerDetails(userInt, num);
 								Data.saveCustomer();
 							}
@@ -327,47 +328,64 @@ public class Manager {
 						System.out.println("--------------------");
 						System.out.println("Viewing Invoices");
 						System.out.println("--------------------\n");
-						System.out.println("Invoices---------------------------------------------");
+						System.out.println("Invoices------------------------------------------------------------------------------\n");
 						String n = "";
+						System.out.printf("%-18s|%-15s|%-20s|%-20s|%-20s|%-30s", "   Total Cost", "Date Issued" ,"Customer", "Sales Person", "Delivery Cost", "Address");
+						System.out.print("\n");
 						Controller.displayTable(Data.invoiceArr);
+						System.out.print("\n--------------------------------------------------------------------------------------\n");
 						System.out.print("Please select an invoice to view\nNumber:  ");
 						Integer num = input.nextInt();
-						while(!n.equals("n") || !n.equals("N"))
+						while(!n.equals("n"))
 						{
-							n = "";
 							Controller.clrscr();
-							System.out.printf("%-15s|%-15s|%-20s|%-20s|%-20s|%-30s", "Total Cost", "Date Issued", "customer", "Sales Person", "DeliveryCost", "Address");
+							System.out.println("Viewing " + Data.invoiceArr.get(num).getCustomer().getName() + "'s Invoice--------------------------------------------------------------------------------");
+							System.out.printf("%-15s|%-15s|%-20s|%-20s|%-20s|%-30s", "Total Cost", "Date Issued", "Customer", "Sales Person", "DeliveryCost", "Address");
 							System.out.print("\n" +Data.invoiceArr.get(num));
+							System.out.println("\n--------------------------------------------------------------------------------------------------------");
 							System.out.println("\nAttached Products");
-							Controller.printinvoicePTable(num);
+							Controller.printinvoiceProdTable(num);
+							System.out.println("\n--------------------------------------------------------------------------------------------------------");
 							System.out.println("\nAttacked Recipts");
-							Controller.printinvoiceRTable(num);
+							Data.invoiceArr.get(num).showreceiptTable();
+							System.out.println("\n--------------------------------------------------------------------------------------------------------");
 							if(n.equals("Y") || n.equals("y")) {
 								while(userInt != 0) {
+									Controller.clrscr();
 									System.out.println("--------------------");
 									System.out.println("Adding Product/Receipt");
 									System.out.println("--------------------\n");
 									System.out.println("0) Return to Invoice");
 									System.out.println("1) Add Product");
 									System.out.println("2) Add Receipt");
-									input.nextInt();
+									System.out.print("\nInput:  ");
+									userInt = input.nextInt();
+									input.nextLine();
 									if(userInt == 1) {
+										List<Product> product =new LinkedList<Product>();
 										float cost = 0;
+										userInt = 0;
 										while(userInt != Data.productArr.size()) {
 											Controller.clrscr();
-											System.out.println("Please select a product from the list to add to the invoice");
-											System.out.println("Products-----------------------------------------------\n");
-											System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+											System.out.println("Please select a product from the list to add to the invoice\n");
+											System.out.println("Products----------------------------------------------------------------------------------------------------------\n");
+											System.out.printf("%-33s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+											System.out.print("\n");
 											Controller.displayTable(Data.productArr);
-											System.out.println("-------------------------------------------------------");
-											System.out.println("Enter " + Data.productArr.size() + " to finish adding Products.\nNumber:  ");
-											Integer one = input.nextInt();
-											if(userInt >= Data.productArr.size() && userInt < Data.productArr.size()) {
-												Data.invoiceArr.get(num).addProduct(Data.productArr.get(one));
-												cost = cost + Data.productArr.get(one).getSalePrice();
+											System.out.print("\n");
+											System.out.println("------------------------------------------------------------------------------------------------------------------");
+											System.out.print("Enter " + Data.productArr.size() + " to finish entering Products.\nNumber:  ");
+											Integer num1 = input.nextInt();
+											if(num1 >= 0 && num1 < Data.productArr.size()) {
+												product.add(Data.productArr.get(num1));
+												cost = cost + Data.productArr.get(num1).getSalePrice();
+												System.out.println("Product has been added to the invoice.");
+												Controller.pressAny();
+											}
+											else if(num1 == Data.productArr.size()) {
+												break;
 											}
 											else{
-												Data.invoiceArr.get(num).setTotalCost(Data.invoiceArr.get(num).getCurrentCost() + cost);
 												Controller.clrscr();
 												System.out.println("Invaild input, please enter a Product number.");
 												Controller.pressAny();
@@ -377,11 +395,13 @@ public class Manager {
 									if(userInt == 2) {
 										Controller.clrscr();
 										LocalDate currentDate = LocalDate.now();
-										System.out.println("What is the total for this receipt:  ");
+										System.out.print("What is the total for this receipt:  ");
 										Float total = input.nextFloat();
 										Data.invoiceArr.get(num).addreceipt(total, currentDate);
 									}
 								}
+								n = "";
+								userInt = 99;
 							}
 							else if(n.equals("") || n.equals("")) {
 								System.out.print("\nWould you like to add a receipt or product?\n(Y/N):  ");
@@ -392,8 +412,10 @@ public class Manager {
 								Controller.clrscr();
 								System.out.println("Invalid Input");
 								Controller.pressAny();
+								n = "";
 							}
 						}
+						userInt = 99;
 					}
 					//View Active Invoices------------------------------------------------------------------------
 					else if(userInt == 5) {
@@ -409,6 +431,7 @@ public class Manager {
 							System.out.println("Showing All Active invoice in File System.");
 							Controller.viewActiveInvoices();
 						}
+						userInt = 99;
 					}
 					//Viewing Archived Invoices--------------------------------------------------------------------
 					else if(userInt == 6) {
@@ -450,7 +473,7 @@ public class Manager {
 							String pass = input.next();
 							in = Controller.passwordValidation(pass);
 						}
-						System.out.print("/nNew Password: ");
+						System.out.print("\nNew Password: ");
 						System.out.print("Please enter a new password:  ");
 						String newpass = input.next();
 						Controller.setPassword(newpass);

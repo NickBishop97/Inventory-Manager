@@ -120,11 +120,12 @@ public class Controller {
 			System.out.println(prod + "|" + Data.warehouseArr.get(ware).getWarehouseID());
 			System.out.print("\nDoes this information look correct? (Y/N)  ");
 			String h = input.next();
+			input.nextLine();
 			if(h.equals("Y") || h.equals("y")) {
 				Data.productArr.add(prod);
 				int code = prod.getID();
 				Data.warehouseArr.get(ware).addProduct(code);
-				Data.warehouseArr.get(ware).increaseStock(code, 0);
+				//Data.warehouseArr.get(ware).increaseStock(code, 10);
 				Data.warehouseArr.get(ware).addProduct(Data.productArr.size()-1);
 				System.out.println("New Product has been added to the file system.");
 				pressAny();
@@ -154,21 +155,30 @@ public class Controller {
 				System.out.print(Data.warehouseArr.get(i).getWarehouseID());
 				System.out.print("\n");
 			}
-			//TODO fix bug with adding stock. Nothing happens when you add stock.
 			System.out.print("\nWhat Warehouse is this product located at.\nNumber:  ");
 			Integer ware = input.nextInt();
+			ArrayList<Product> prodlist = Data.warehouseArr.get(ware).getAllProducts();
 			clrscr();
 			System.out.println("Products at Warehouse: " + Data.warehouseArr.get(ware).getWarehouseID());
-			System.out.println("-----------------------------------------------------------------------------");
-			displayTable(Data.warehouseArr.get(ware).getAllProducts());
-			System.out.println("-----------------------------------------------------------------------------");
+			System.out.println("------------------------------------------------------------------------------------------------------------------");
+			System.out.printf("%-33s|%-15s|%-15s|%-20s|%-15s|%-15s","Name","Cost","Price","Category","Amount Sold", "In Stock");
+			System.out.print("\n");
+			for (int i = 0; i < Data.warehouseArr.get(ware).getAllProducts().size(); i++) {
+	        	System.out.print(i + ") ");
+				System.out.print(Data.warehouseArr.get(ware).getAllProducts().get(i));
+				int code0 = prodlist.get(i).getID();
+				System.out.print("|" + Data.warehouseArr.get(ware).getStock(code0));	        
+				}
+			System.out.print("\n");
+			System.out.println("------------------------------------------------------------------------------------------------------------------");
 			System.out.print("\nPlease select the Product you would like to add stock to.\nNumber:  ");
 			Integer num = input.nextInt(); 
 			input.nextLine();
 			System.out.print("\nHow much stock would you like to add.\nAmount:  ");
 			Integer stock = input.nextInt();
 			input.nextLine();
-			Data.warehouseArr.get(ware).increaseStock(num, stock);
+			int code = prodlist.get(num).getID();
+			Data.warehouseArr.get(ware).increaseStock(code, stock);
 			pressAny();
     	}
     }
@@ -187,6 +197,7 @@ public class Controller {
 		System.out.println(emplo);
 		System.out.print("\nDoes this information look correct? (Y/N)  ");
 		String h = input.next();
+		input.nextLine();
 		if(h.equals("Y") || h.equals("y")) {
 			Data.employeeArr.add(emplo);
 			System.out.println("New Employee has been added to the filesystem.");
@@ -205,20 +216,26 @@ public class Controller {
     public static void addInvoice(int userInt){
     	List<Product> product =new LinkedList<Product>();
 		float cost = 0;
+		int out = 0;
 		while(userInt != Data.productArr.size()) {
 			clrscr();
-			System.out.println("Please select a product from the list to add to the invoice");
-			System.out.println("Products-----------------------------------------------\n");
-			System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+			System.out.println("Please select a product from the list to add to the invoice\n");
+			System.out.println("Products----------------------------------------------------------------------------------------------------------\n");
+			System.out.printf("%-33s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
+			System.out.print("\n");
 			displayTable(Data.productArr);
-			System.out.println("-------------------------------------------------------");
-			System.out.println("Enter " + Data.productArr.size() + " to finish entering Products.\nNumber:  ");
+			System.out.print("\n");
+			System.out.println("------------------------------------------------------------------------------------------------------------------");
+			System.out.print("Enter " + Data.productArr.size() + " to finish entering Products.\nNumber:  ");
 			Integer num = input.nextInt();
-			if(userInt >= Data.productArr.size() && userInt < Data.productArr.size()) {
+			if(num >= 0 && num < Data.productArr.size()) {
 				product.add(Data.productArr.get(num));
 				cost = cost + Data.productArr.get(num).getSalePrice();
+				System.out.println("Product has been added to the invoice.");
+				out++;
+				pressAny();
 			}
-			else if(userInt == Data.productArr.size()) {
+			else if(out > 0 && num == Data.productArr.size()) {
 				break;
 			}
 			else{
@@ -228,24 +245,34 @@ public class Controller {
 			}
 		}
 		clrscr();
-		System.out.print("Please enter the Month, Day and Year(ex. 01/01/20).\nMonth:  ");
+		System.out.print("Please enter the Month, Day and Year(ex. 01/01/2020).\nMonth:  ");
 		Integer month = input.nextInt();
-		System.out.print("\nDay:  ");
+		System.out.print("Day:  ");
 		Integer day = input.nextInt();
-		System.out.print("\nYear:  ");
+		System.out.print("Year:  ");
 		Integer year = input.nextInt();
 		LocalDate date1 = LocalDate.of(year, month, day);
 		clrscr();
+		System.out.println("Customers---------------------------------------------------------------------------------------------------------\n");
+		System.out.printf("%-33s|%-11s|%-10s|%-17s|%-5s", "Name", "Phone", "Sales Tax", "Suspension Status", "Active Status");
+		System.out.print("\n");
 		displayTable(Data.customerArr);
-		System.out.print("Please select a customer to add to this Invoice.\nNumber");
+		System.out.print("\n");
+		System.out.println("------------------------------------------------------------------------------------------------------------------");
+		System.out.print("Please select a customer to add to this Invoice.\nNumber:  ");
 		Customer customer = Data.customerArr.get(input.nextInt());
 		clrscr();
+		System.out.println("Employee----------------------------------------------------------------------------------------------------------\n");
+		System.out.printf("%-30s|%-11s|%-10s|%-1s", "Name", "Phone", "Commission", "Total Sales");
+		System.out.print("\n");
 		displayTable(Data.employeeArr);
+		System.out.print("\n");
+		System.out.println("------------------------------------------------------------------------------------------------------------------");
 		System.out.print("Please select a employee to attach to the Invoice.\nNumber:  ");
 		Employee employee = Data.employeeArr.get(input.nextInt());
 		Invoice in = new Invoice(product, cost, date1, customer, employee);
 		Data.invoiceArr.add(in);
-		System.out.print("Invoice has succsusfully been added to the file system.");
+		System.out.println("Invoice has succsusfully been added to the file system.");
 		pressAny();
     }
     //Delete----------------------------------------------------------------------------------------------------
@@ -267,6 +294,7 @@ public class Controller {
 				Integer num = input.nextInt();
 				System.out.print("\nAre you sure you want to delete this Employee?(Y/N)  ");
 				String z = input.next();
+				input.nextLine();
 				if(z.equals("Y") || z.equals("y")) {
 					remove(Data.productArr, num);
 					System.out.println("Product has been deleted from the File System.");
@@ -285,6 +313,7 @@ public class Controller {
 		Integer num = input.nextInt();
 		System.out.print("\nAre you sure you want to delete this Employee?(Y/N)  ");
 		String y = input.next();
+		input.nextLine();
 		if(y.equals("Y") || y.equals("y")) {
 			remove(Data.employeeArr, num);
 			System.out.println("Employee has been deleted from the File System.");
@@ -297,6 +326,7 @@ public class Controller {
 			clrscr();
 			System.out.print("Please enter the new name for this Product:  ");
 			String newname = input.next();
+			input.nextLine();
 			Data.productArr.get(num).setName(newname);
 			System.out.println("Name has successfully been changed to " + newname + "\n");
 			System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
@@ -330,6 +360,7 @@ public class Controller {
 			clrscr();
 			System.out.print("Please enter the new Category for this Product");
 			String newcat = input.next();
+			input.nextLine();
 			Data.productArr.get(num).setCategory(newcat);;
 			System.out.println("Category has successfully been changed to " + newcat + "\n");
 			System.out.printf("%-30s|%-15s|%-15s|%-20s|%-15s","Name","Cost","Price","Category","Amount Sold");
@@ -365,6 +396,7 @@ public class Controller {
 			clrscr();
 			System.out.print("Please enter the new Phone Number for this Employee:  ");
 			String newPhone = input.next();
+			input.nextLine();
 			Data.employeeArr.get(num).setPhone(newPhone);
 			System.out.println("Phone Number has successfully been changed to " + newPhone + "\n");
 			System.out.printf("%-30s|%-11s|%-10s|%-1s","Name","Phone","Commi.","Total Sales");
@@ -400,6 +432,7 @@ public class Controller {
 			clrscr();
 			System.out.print("Please enter the new Phone Number for this customer:  ");
 			String newphone = input.next();
+			input.nextLine();
 			Data.customerArr.get(num).setPhone(newphone);
 			System.out.println("Phone Number has successfully been changed to " + newphone + "\n");
 			System.out.printf("%-30s|%-11s|%-1s|%-5s|%-5s","Name","Phone","Sales Tax.", "Suspension Status", "Active Status");
@@ -411,6 +444,7 @@ public class Controller {
 			clrscr();
 			System.out.print("Would you like to flip the Suspension Status(Y/N):  ");
 			String newsus = input.next();
+			input.nextLine();
 			if(newsus.equals("y") || newsus.equals("Y")) {
 				Data.customerArr.get(num).flipSuspensionStatus();
 				System.out.println("SuspensionStatus is now set to " + Data.customerArr.get(num).getSuspensionStatus());
@@ -421,6 +455,7 @@ public class Controller {
 			clrscr();
 			System.out.print("Would you like to flip the Active Status(Y/N):  ");
 			String newsus = input.next();
+			input.nextLine();
 			if(newsus.equals("y") || newsus.equals("Y")) {
 				Data.customerArr.get(num).flipActiveStatus();;
 				System.out.println("SuspensionStatus is now set to " + Data.customerArr.get(num).getActiveStatus());
@@ -493,7 +528,7 @@ public class Controller {
 	    }
 	 
 	 public static boolean passwordValidation(String inputPassword) {
-      if(inputPassword == Data.password) {
+      if(inputPassword.equals(Data.password)) {
           return true;
       }else {
           return false;
@@ -557,14 +592,10 @@ public class Controller {
           Data.lastLaunch = currentDate;
       }
   }
-  
-  public static void printinvoiceRTable(int x) {
-      System.out.print(String.format("%nReceipts:%n%-15s|%-15s", "Date", "Amount Paid"));
-      Data.invoiceArr.get(x).showreceiptTable();
-      }
 
-  public static void printinvoicePTable(int x) {
-      System.out.print(String.format("%Products:%n%-20s|%-15s|%-15s", "Product Name", "Product ID", "Product Price"));
+  public static void printinvoiceProdTable(int x) {
+      System.out.print(String.format("%nProducts:%n%-20s|%-15s|%-15s", "Product Name", "Product ID", "Product Price"));
+      System.out.print("\n");
       Data.invoiceArr.get(x).showproductTable();
   }
 }

@@ -9,9 +9,9 @@ import java.time.LocalDate;
  */
 @SuppressWarnings("serial")
 public class Invoice implements Serializable {
-	private List<Float> receiptAmounts;
-	private List<LocalDate> receiptDates;
-	private List<Product> productList;
+	private List<Float> receiptAmounts = new ArrayList<Float>();
+	private List<LocalDate> receiptDates = new ArrayList<LocalDate>();
+	private List<Product> productList = new ArrayList<Product>();
 	private float totalCost;
 	private float currentCost;
 	private LocalDate dateIssued;
@@ -246,10 +246,12 @@ public class Invoice implements Serializable {
 		}
 	
 	public void showreceiptTable() {
-		if(receiptAmounts.size() == 0) {
-			System.out.printf("%-10s|%-10s", "", "No receipts attached to this Invoice");
+		if(this.receiptAmounts == null) {
+			System.out.printf("\n%-30s%-10s", "", "No receipts attached to this Invoice");
 		}
 		else {
+			System.out.print(String.format("%nReceipts:%n%-15s|%-15s", "Date", "Amount Paid"));
+			System.out.print("\n");
 		    for (int i = 0; i < receiptAmounts.size(); i++) {
 		    	System.out.print(String.format("%-15s|%-15s", receiptDates.get(i).toString(), receiptAmounts.get(i).toString()));
 		    	System.out.print("\n");

@@ -6,6 +6,7 @@ import java.io.Serializable;
  * @author Bailey Norman
  */
 
+@SuppressWarnings("serial")
 public class Employee implements Serializable {
 	private float commission;
 	private String name;
